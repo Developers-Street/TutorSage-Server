@@ -31,6 +31,11 @@ import static org.springframework.http.HttpStatus.FORBIDDEN;
 public class UserResource {
     private final UserService userService;
 
+    @GetMapping("/rootroute")
+    public String rootRoute(HttpServletRequest request, HttpServletResponse response) {
+        return "THIS IS THE SERVER SIDE FOR TUTOR SAGE";
+    }
+
     @GetMapping("/me")
     public void getUser(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String authorizationHeader = request.getHeader(AUTHORIZATION);
