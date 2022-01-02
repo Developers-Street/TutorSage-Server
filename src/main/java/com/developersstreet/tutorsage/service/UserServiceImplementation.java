@@ -32,7 +32,7 @@ public class UserServiceImplementation implements UserService, UserDetailsServic
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username);
         if(user == null) {
-            log.error("User not found");
+            log.error("User not found {}", username);
             throw new UsernameNotFoundException("User not found");
         } else {
             log.info("User found: {}", username);
