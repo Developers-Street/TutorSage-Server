@@ -10,6 +10,7 @@ import com.developersstreet.tutorsage.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,19 +27,16 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/user")
 @RequiredArgsConstructor
+@Slf4j
 public class UserResource {
     private final UserService userService;
-
-    @GetMapping("/rootroute")
-    public String rootRoute(HttpServletRequest request, HttpServletResponse response) {
-        return "THIS IS THE SERVER SIDE FOR TUTOR SAGE";
-    }
 
     @GetMapping("/me")
     public void getUser(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String authorizationHeader = request.getHeader(AUTHORIZATION);
+        log.info(authorizationHeader);
         if(authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             try {
                 String token = authorizationHeader.substring("Bearer ".length());
