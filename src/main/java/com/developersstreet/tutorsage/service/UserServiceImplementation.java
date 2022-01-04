@@ -2,7 +2,9 @@ package com.developersstreet.tutorsage.service;
 
 import com.developersstreet.tutorsage.model.Role;
 import com.developersstreet.tutorsage.model.User;
+import com.developersstreet.tutorsage.model.UserData;
 import com.developersstreet.tutorsage.repository.RoleRepository;
+import com.developersstreet.tutorsage.repository.UserDataRepository;
 import com.developersstreet.tutorsage.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +28,7 @@ public class UserServiceImplementation implements UserService, UserDetailsServic
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+    private final UserDataRepository userDataRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Override
@@ -49,6 +52,11 @@ public class UserServiceImplementation implements UserService, UserDetailsServic
         log.info("Saving new user {} to the database", user.getUsername());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
+    }
+
+    @Override
+    public UserData saveUserData(UserData userData) {
+        return userDataRepository.save(userData);
     }
 
     @Override
