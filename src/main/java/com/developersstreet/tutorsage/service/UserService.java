@@ -7,9 +7,9 @@ import com.developersstreet.tutorsage.model.UserData;
 import java.util.List;
 
 public interface UserService {
-    User saveUser(User user);
+    User saveUser(User user) throws Exception;
     Role saveRole(Role role);
-    UserData saveUserData(UserData userData);
+    UserData saveUserData(UserData userData) throws Exception;
 
     void addRoleToUser(String username, String roleName);
     User getUser(String username);

@@ -37,9 +37,20 @@ public class AuthController {
     private final UserService userService;
 
     @PostMapping("/signup")
-    public ResponseEntity<User> registerUser(@RequestBody User user) {
+    public ResponseEntity<User> registerUser(@RequestBody User user, HttpServletRequest request, HttpServletResponse response) throws IOException {
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("auth/signup").toUriString());
-        return ResponseEntity.created(uri).body(userService.saveUser(user));
+        User savedUser = null;
+        try {
+            savedUser = userService.saveUser(user);
+        } catch (Exception exception) {
+            response.setHeader("error", exception.getMessage());
+            response.setStatus(FORBIDDEN.value());
+            Map<String, String> error = new HashMap<>();
+            error.put("error_message", exception.getMessage());
+            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+            new ObjectMapper().writeValue(response.getOutputStream(), error);
+        }
+        return ResponseEntity.created(uri).body(savedUser);
     }
 
     @GetMapping("/token/refresh")

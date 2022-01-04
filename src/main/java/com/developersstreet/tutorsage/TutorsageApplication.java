@@ -43,10 +43,10 @@ public class TutorsageApplication {
 			userService.saveRole(new Role(null, "ROLE_ADMIN"));
 			userService.saveRole(new Role(null, "ROLE_SUPER_ADMIN"));
 
-			userService.saveUser(new User(null, "John Cena", "john", "john@1234", new ArrayList<>()));
-			userService.saveUser(new User(null, "Randy Orton", "randy", "randy@1234", new ArrayList<>()));
-			userService.saveUser(new User(null, "Big Show", "show", "show@1234", new ArrayList<>()));
-			userService.saveUser(new User(null, "Roman Reigns", "roman", "roman@1234", new ArrayList<>()));
+			userService.saveUser(new User(null, "john@gmail.com", "john", "John@1234", new ArrayList<>()));
+			userService.saveUser(new User(null, "randy@gmail.com", "randy", "Randy@1234", new ArrayList<>()));
+			userService.saveUser(new User(null, "bigshow@gmail.com", "show", "Show@1234", new ArrayList<>()));
+			userService.saveUser(new User(null, "romanreigns@gmail.com", "roman", "Roman@1234", new ArrayList<>()));
 
 			userService.addRoleToUser("john", "ROLE_USER");
 			userService.addRoleToUser("john", "ROLE_MANAGER");
