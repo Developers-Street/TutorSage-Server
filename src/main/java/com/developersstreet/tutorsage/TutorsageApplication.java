@@ -38,23 +38,17 @@ public class TutorsageApplication {
 	@Bean
 	CommandLineRunner run(UserService userService) {
 		return args -> {
-			userService.saveRole(new Role(null, "ROLE_USER"));
-			userService.saveRole(new Role(null, "ROLE_MANAGER"));
-			userService.saveRole(new Role(null, "ROLE_ADMIN"));
-			userService.saveRole(new Role(null, "ROLE_SUPER_ADMIN"));
+			ArrayList<String> roles = new ArrayList<>();
+			roles.add("ROLE_TUTOR");
+			roles.add("ROLE_STUDENT");
 
-			userService.saveUser(new User(null, "john@gmail.com", "john", "John@1234", new ArrayList<>()));
-			userService.saveUser(new User(null, "randy@gmail.com", "randy", "Randy@1234", new ArrayList<>()));
-			userService.saveUser(new User(null, "bigshow@gmail.com", "show", "Show@1234", new ArrayList<>()));
-			userService.saveUser(new User(null, "romanreigns@gmail.com", "roman", "Roman@1234", new ArrayList<>()));
+			for(int i = 0; i < roles.size(); i++) {
+				try {
+					userService.saveRole(new Role(null, roles.get(i)));
+				} catch (Exception exception) {
 
-			userService.addRoleToUser("john", "ROLE_USER");
-			userService.addRoleToUser("john", "ROLE_MANAGER");
-			userService.addRoleToUser("randy", "ROLE_MANAGER");
-			userService.addRoleToUser("show", "ROLE_ADMIN");
-			userService.addRoleToUser("roman", "ROLE_SUPER_ADMIN");
-			userService.addRoleToUser("roman", "ROLE_ADMIN");
-			userService.addRoleToUser("roman", "ROLE_USER");
+				}
+			}
 		};
 	}
 }
