@@ -9,7 +9,6 @@ import com.developersstreet.tutorsage.model.User;
 import com.developersstreet.tutorsage.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -44,12 +43,7 @@ public class AuthController {
             if(userService.getUserByEmail(user.getEmail()) != null) throw new Exception("Email already exist!!");
                 savedUser = userService.saveUser(user);
         } catch (Exception exception) {
-//            response.setHeader("error", exception.getMessage());
-//            response.setStatus(FORBIDDEN.value());
-//            Map<String, String> error = new HashMap<>();
-//            error.put("error_message", exception.getMessage());
-//            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-//            new ObjectMapper().writeValue(response.getOutputStream(), error);
+            response.setHeader("error", exception.getMessage());
             response.setStatus(FORBIDDEN.value());
             Map<String, String> error = new HashMap<>();
             error.put("message", exception.getMessage());

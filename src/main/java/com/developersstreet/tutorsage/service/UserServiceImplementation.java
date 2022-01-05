@@ -6,7 +6,6 @@ import com.developersstreet.tutorsage.model.UserData;
 import com.developersstreet.tutorsage.repository.RoleRepository;
 import com.developersstreet.tutorsage.repository.UserDataRepository;
 import com.developersstreet.tutorsage.repository.UserRepository;
-import com.developersstreet.tutorsage.utility.UserDataValidation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -32,8 +31,6 @@ public class UserServiceImplementation implements UserService, UserDetailsServic
     private final UserDataRepository userDataRepository;
     private final PasswordEncoder passwordEncoder;
 
-    private final UserDataValidation userDataValidation = new UserDataValidation();
-
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username);
@@ -51,17 +48,15 @@ public class UserServiceImplementation implements UserService, UserDetailsServic
     }
 
     @Override
-    public User saveUser(User user) throws Exception {
+    public User saveUser(User user) {
         log.info("Saving new user {} to the database", user.getUsername());
-//        userValidation.validateUser(user);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         log.info("AAA");
         return userRepository.save(user);
     }
 
     @Override
-    public UserData saveUserData(UserData userData) throws Exception {
-        userDataValidation.validateUserData(userData);
+    public UserData saveUserData(UserData userData) {
         return userDataRepository.save(userData);
     }
 
@@ -88,6 +83,11 @@ public class UserServiceImplementation implements UserService, UserDetailsServic
     @Override
     public User getUserByEmail(String email) {
         return userRepository.findByEmail(email);
+    }
+
+    @Override
+    public UserData getUserDataByUser_id(Long userId) {
+        return userDataRepository.findByUserId(userId);
     }
 
     @Override

@@ -5,6 +5,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 import static javax.persistence.GenerationType.AUTO;
 
@@ -16,31 +19,53 @@ public class UserData {
     @Id @GeneratedValue(strategy = AUTO)
     private Long id;
 
-    @Column(nullable = false)
-    private String first_name;
+    @Column(name = "first_name")
+    @NotNull(message = "First Name cannot be null")
+    @NotBlank(message = "First Name cannot be blank")
+    @Pattern(regexp = "\\b([A-ZÀ-ÿ][-,a-z. ']+[ ]*)+", message = "First Name is invalid")
+    private String firstName;
 
-    private String middle_name;
+    @Column(name = "middle_name")
+    @Pattern(regexp = "^[A-Za-z]*$", message = "Middle Name is invalid")
+    private String middleName;
 
-    @Column(nullable = false)
-    private String last_name;
+    @Column(name = "last_name")
+    @NotNull(message = "Last Name cannot be null")
+    @NotBlank(message = "Last Name cannot be blank")
+    @Pattern(regexp = "\\b([A-ZÀ-ÿ][-,a-z. ']+[ ]*)+", message = "First Name is invalid")
+    private String lastName;
 
-    @Column(nullable = false)
+    @NotNull(message = "Gender cannot be null")
+    @NotBlank(message = "Gender cannot be blank")
+    @Pattern(regexp = "^(male|female|other)$", message = "Gender is invalid")
     private String gender;
 
-    @Column(nullable = false)
-    private String birth_day;
+    @Column(name = "birth_day")
+    @NotNull(message = "Birth Day cannot be null")
+    @NotBlank(message = "Birth Day cannot be blank")
+    @Pattern(regexp = "^(0[1-9]|[12][0-9]|3[01])$", message = "Birth day is invalid")
+    private String birthDay;
 
-    @Column(nullable = false)
-    private String birth_month;
+    @Column(name = "birth_month")
+    @NotNull(message = "Birth Month cannot be null")
+    @NotBlank(message = "Birth Month cannot be blank")
+    @Pattern(regexp = "^(0[1-9]|1[012])$", message = "Birth month is invalid")
+    private String birthMonth;
 
-    @Column(nullable = false)
-    private String birth_year;
+    @Column(name = "birth_year")
+    @NotNull(message = "Birth Year cannot be null")
+    @NotBlank(message = "Birth Year cannot be blank")
+    @Pattern(regexp = "(19[7-9][0-9]|20[0-1][0-9]|202[0-1])$", message = "Birth year is invalid")
+    private String birthYear;
 
-    private String profile_pic_url;
+    private String profilePicUrl;
 
-    @Column(nullable = false)
-    private String phone_number;
+    @Column(name = "phone_number")
+    @NotNull(message = "Phone Number cannot be null")
+    @NotBlank(message = "Phone Number cannot be blank")
+    @Pattern(regexp = "^[6-9][0-9]{9}$", message = "Phone Number is invalid")
+    private String phoneNumber;
 
     @Column(nullable = false, unique = true)
-    private Long user_id;
+    private Long userId;
 }
