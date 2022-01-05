@@ -3,8 +3,13 @@ package com.developersstreet.tutorsage.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.UniqueElements;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -19,13 +24,20 @@ public class User {
     @Id @GeneratedValue(strategy = AUTO)
     private Long id;
 
-    @Column(unique = true, nullable = false)
+    @Column(unique = true)
+    @NotNull
+    @NotBlank(message = "Email must not be blank")
+    @Email(message = "Email is not valid")
     private String email;
 
-    @Column(unique = true, nullable = false)
+    @Column(unique = true)
+    @NotNull
+    @NotBlank(message = "Username must not be blank")
+    @Pattern(regexp = "^[A-Za-z]\\w{3,29}$", message = "Username is not valid")
     private String username;
 
-    @Column(nullable = false)
+    @NotNull
+    @NotBlank(message = "Password must not be blank")
     private String password;
 
     @ManyToMany(fetch = EAGER)

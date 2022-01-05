@@ -7,7 +7,6 @@ import com.developersstreet.tutorsage.repository.RoleRepository;
 import com.developersstreet.tutorsage.repository.UserDataRepository;
 import com.developersstreet.tutorsage.repository.UserRepository;
 import com.developersstreet.tutorsage.utility.UserDataValidation;
-import com.developersstreet.tutorsage.utility.UserValidation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -33,7 +32,6 @@ public class UserServiceImplementation implements UserService, UserDetailsServic
     private final UserDataRepository userDataRepository;
     private final PasswordEncoder passwordEncoder;
 
-    private final UserValidation userValidation = new UserValidation();
     private final UserDataValidation userDataValidation = new UserDataValidation();
 
     @Override
@@ -55,8 +53,9 @@ public class UserServiceImplementation implements UserService, UserDetailsServic
     @Override
     public User saveUser(User user) throws Exception {
         log.info("Saving new user {} to the database", user.getUsername());
-        userValidation.validateUser(user);
+//        userValidation.validateUser(user);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        log.info("AAA");
         return userRepository.save(user);
     }
 

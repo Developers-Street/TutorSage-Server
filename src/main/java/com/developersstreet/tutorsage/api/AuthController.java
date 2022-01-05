@@ -9,6 +9,7 @@ import com.developersstreet.tutorsage.model.User;
 import com.developersstreet.tutorsage.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +17,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.io.IOException;
 import java.net.URI;
 import java.util.Date;
@@ -34,12 +36,12 @@ public class AuthController {
     private final UserService userService;
 
     @PostMapping("/signup")
-    public ResponseEntity<User> registerUser(@RequestBody User user, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public ResponseEntity<User> registerUser(@Valid @RequestBody User user, HttpServletRequest request, HttpServletResponse response) throws Exception {
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("auth/signup").toUriString());
         User savedUser = null;
         try {
-            if(userService.getUserByUsername(user.getUsername()) != null) throw new Exception("username already exists!!");
-            if(userService.getUserByEmail(user.getEmail()) != null) throw new Exception("email already exist!!");
+            if(userService.getUserByUsername(user.getUsername()) != null) throw new Exception("Username already exists!!");
+            if(userService.getUserByEmail(user.getEmail()) != null) throw new Exception("Email already exist!!");
                 savedUser = userService.saveUser(user);
         } catch (Exception exception) {
 //            response.setHeader("error", exception.getMessage());
@@ -49,7 +51,10 @@ public class AuthController {
 //            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 //            new ObjectMapper().writeValue(response.getOutputStream(), error);
             response.setStatus(FORBIDDEN.value());
-            new ObjectMapper().writeValue(response.getOutputStream(), exception.getMessage());
+            Map<String, String> error = new HashMap<>();
+            error.put("message", exception.getMessage());
+            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+            new ObjectMapper().writeValue(response.getOutputStream(), error);
         }
         return ResponseEntity.created(uri).body(savedUser);
     }
