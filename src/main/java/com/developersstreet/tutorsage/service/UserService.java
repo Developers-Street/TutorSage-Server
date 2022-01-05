@@ -12,6 +12,7 @@ public interface UserService {
     UserData saveUserData(UserData userData) throws Exception;
 
     void addRoleToUser(String username, String roleName);
-    User getUser(String username);
+    User getUserByUsername(String username);
+    User getUserByEmail(String email);
     List<User>getUsers();
 }

@@ -38,7 +38,7 @@ public class MeController {
                 JWTVerifier verifier = JWT.require(algorithm).build();
                 DecodedJWT decodedJWT = verifier.verify(token);
                 String username = decodedJWT.getSubject();
-                User user = userService.getUser(username);
+                User user = userService.getUserByUsername(username);
                 userData.setUser_id(user.getId());
                 userService.saveUserData(userData);
             } catch (Exception exception) {
@@ -55,7 +55,7 @@ public class MeController {
     }
 
     @GetMapping("/")
-    public void getUser(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void getUser(HttpServletRequest request, HttpServletResponse response) throws Exception {
         String authorizationHeader = request.getHeader(AUTHORIZATION);
         if(authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             try {
@@ -64,7 +64,8 @@ public class MeController {
                 JWTVerifier verifier = JWT.require(algorithm).build();
                 DecodedJWT decodedJWT = verifier.verify(token);
                 String username = decodedJWT.getSubject();
-                User user = userService.getUser(username);
+                User user = userService.getUserByUsername(username);
+                if(user == null) throw new Exception("User not found");
                 new ObjectMapper().writeValue(response.getOutputStream(), user);
             } catch (Exception exception) {
                 response.setHeader("error", exception.getMessage());

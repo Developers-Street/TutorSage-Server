@@ -4,7 +4,6 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.developersstreet.tutorsage.filter.CustomAuthenticationFilter;
 import com.developersstreet.tutorsage.model.Role;
 import com.developersstreet.tutorsage.model.User;
 import com.developersstreet.tutorsage.service.UserService;
@@ -12,8 +11,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -37,18 +34,22 @@ public class AuthController {
     private final UserService userService;
 
     @PostMapping("/signup")
-    public ResponseEntity<User> registerUser(@RequestBody User user, HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public ResponseEntity<User> registerUser(@RequestBody User user, HttpServletRequest request, HttpServletResponse response) throws Exception {
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("auth/signup").toUriString());
         User savedUser = null;
         try {
-            savedUser = userService.saveUser(user);
+            if(userService.getUserByUsername(user.getUsername()) != null) throw new Exception("username already exists!!");
+            if(userService.getUserByEmail(user.getEmail()) != null) throw new Exception("email already exist!!");
+                savedUser = userService.saveUser(user);
         } catch (Exception exception) {
-            response.setHeader("error", exception.getMessage());
+//            response.setHeader("error", exception.getMessage());
+//            response.setStatus(FORBIDDEN.value());
+//            Map<String, String> error = new HashMap<>();
+//            error.put("error_message", exception.getMessage());
+//            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+//            new ObjectMapper().writeValue(response.getOutputStream(), error);
             response.setStatus(FORBIDDEN.value());
-            Map<String, String> error = new HashMap<>();
-            error.put("error_message", exception.getMessage());
-            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-            new ObjectMapper().writeValue(response.getOutputStream(), error);
+            new ObjectMapper().writeValue(response.getOutputStream(), exception.getMessage());
         }
         return ResponseEntity.created(uri).body(savedUser);
     }
@@ -63,7 +64,7 @@ public class AuthController {
                 JWTVerifier verifier = JWT.require(algorithm).build();
                 DecodedJWT decodedJWT = verifier.verify(refresh_token);
                 String username = decodedJWT.getSubject();
-                User user = userService.getUser(username);
+                User user = userService.getUserByUsername(username);
                 String access_token = JWT.create()
                         .withSubject(user.getUsername())
                         .withExpiresAt(new Date(System.currentTimeMillis() + 10 * 60 * 1000))
@@ -76,12 +77,14 @@ public class AuthController {
                 response.setContentType(MediaType.APPLICATION_JSON_VALUE);
                 new ObjectMapper().writeValue(response.getOutputStream(), tokens);
             } catch (Exception exception) {
-                response.setHeader("error", exception.getMessage());
+//                response.setHeader("error", exception.getMessage());
+//                response.setStatus(FORBIDDEN.value());
+//                Map<String, String> error = new HashMap<>();
+//                error.put("error_message", exception.getMessage());
+//                response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+//                new ObjectMapper().writeValue(response.getOutputStream(), error);
                 response.setStatus(FORBIDDEN.value());
-                Map<String, String> error = new HashMap<>();
-                error.put("error_message", exception.getMessage());
-                response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-                new ObjectMapper().writeValue(response.getOutputStream(), error);
+                new ObjectMapper().writeValue(response.getOutputStream(), exception.getMessage());
             }
         } else {
             throw new RuntimeException("Refresh token is missing");

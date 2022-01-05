@@ -32,6 +32,7 @@ public class UserServiceImplementation implements UserService, UserDetailsServic
     private final RoleRepository roleRepository;
     private final UserDataRepository userDataRepository;
     private final PasswordEncoder passwordEncoder;
+
     private final UserValidation userValidation = new UserValidation();
     private final UserDataValidation userDataValidation = new UserDataValidation();
 
@@ -80,9 +81,14 @@ public class UserServiceImplementation implements UserService, UserDetailsServic
     }
 
     @Override
-    public User getUser(String username) {
+    public User getUserByUsername(String username) {
         log.info("Fetching user {}", username);
         return userRepository.findByUsername(username);
+    }
+
+    @Override
+    public User getUserByEmail(String email) {
+        return userRepository.findByEmail(email);
     }
 
     @Override

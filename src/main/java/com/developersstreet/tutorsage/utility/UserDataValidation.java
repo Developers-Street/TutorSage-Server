@@ -32,7 +32,7 @@ public class UserDataValidation {
     }
 
     public boolean validateGender(String gender) {
-        if(gender.equals("Male") || gender.equals("Female") || gender.equals("Other")) return true;
+        if(gender.equals("male") || gender.equals("female") || gender.equals("other")) return true;
         return false;
     }
 
