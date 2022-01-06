@@ -6,6 +6,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.developersstreet.tutorsage.model.User;
 import com.developersstreet.tutorsage.model.UserData;
+import com.developersstreet.tutorsage.model.UserMerged;
 import com.developersstreet.tutorsage.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -94,11 +95,9 @@ public class MeController {
                 Map<String, Object> res = new HashMap<>();
                 User user = userService.getUserByUsername(username);
                 if(user == null) throw new Exception("User not found");
-                UserData userData = userService.getUserDataByUserId(user.getId());
-                res.put("user", user);
-                res.put("userData", userData);
+                UserMerged userMerged = userService.getUserMergedByUserId(user.getUsername(), user.getId());
                 response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-                new ObjectMapper().writeValue(response.getOutputStream(), user);
+                new ObjectMapper().writeValue(response.getOutputStream(), userMerged);
             } catch (Exception exception) {
                 response.setHeader("error", exception.getMessage());
                 response.setStatus(FORBIDDEN.value());

@@ -3,6 +3,7 @@ package com.developersstreet.tutorsage.service;
 import com.developersstreet.tutorsage.model.Role;
 import com.developersstreet.tutorsage.model.User;
 import com.developersstreet.tutorsage.model.UserData;
+import com.developersstreet.tutorsage.model.UserMerged;
 import com.developersstreet.tutorsage.repository.RoleRepository;
 import com.developersstreet.tutorsage.repository.UserDataRepository;
 import com.developersstreet.tutorsage.repository.UserRepository;
@@ -77,6 +78,12 @@ public class UserServiceImplementation implements UserService, UserDetailsServic
     public User getUserByUsername(String username) {
         log.info("Fetching user {}", username);
         return userRepository.findByUsername(username);
+    }
+
+    @Override
+    public UserMerged getUserMergedByUserId(String username, Long userId) {
+        UserMerged userMerged = new UserMerged(userRepository.findByUsername(username), userDataRepository.findByUserId(userId));
+        return userMerged;
     }
 
     @Override
