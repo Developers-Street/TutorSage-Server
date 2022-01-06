@@ -1,5 +1,6 @@
 package com.developersstreet.tutorsage.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,6 +19,7 @@ import static javax.persistence.GenerationType.AUTO;
 public class Role {
     @Id
     @GeneratedValue(strategy = AUTO)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Long id;
 
     @Column(unique = true)

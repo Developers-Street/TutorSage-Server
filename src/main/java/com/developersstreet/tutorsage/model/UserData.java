@@ -1,5 +1,6 @@
 package com.developersstreet.tutorsage.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,6 +18,7 @@ import static javax.persistence.GenerationType.AUTO;
 @AllArgsConstructor
 public class UserData {
     @Id @GeneratedValue(strategy = AUTO)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Long id;
 
     @Column(name = "first_name")
@@ -66,6 +68,7 @@ public class UserData {
     @Pattern(regexp = "^[6-9][0-9]{9}$", message = "Phone Number is invalid")
     private String phoneNumber;
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(nullable = false, unique = true)
     private Long userId;
 }

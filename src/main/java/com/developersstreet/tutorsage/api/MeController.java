@@ -92,7 +92,6 @@ public class MeController {
                 JWTVerifier verifier = JWT.require(algorithm).build();
                 DecodedJWT decodedJWT = verifier.verify(token);
                 String username = decodedJWT.getSubject();
-                Map<String, Object> res = new HashMap<>();
                 User user = userService.getUserByUsername(username);
                 if(user == null) throw new Exception("User not found");
                 UserMerged userMerged = userService.getUserMergedByUserId(user.getUsername(), user.getId());
