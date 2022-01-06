@@ -51,7 +51,6 @@ public class UserServiceImplementation implements UserService, UserDetailsServic
     public User saveUser(User user) {
         log.info("Saving new user {} to the database", user.getUsername());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        log.info("AAA");
         return userRepository.save(user);
     }
 

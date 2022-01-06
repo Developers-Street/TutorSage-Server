@@ -9,6 +9,7 @@ import com.developersstreet.tutorsage.model.User;
 import com.developersstreet.tutorsage.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,12 +17,11 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.net.URI;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
@@ -30,6 +30,8 @@ import static org.springframework.http.HttpStatus.FORBIDDEN;
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
+@Slf4j
+@Transactional
 public class AuthController {
 
     private final UserService userService;
@@ -39,9 +41,9 @@ public class AuthController {
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("auth/signup").toUriString());
         User savedUser = null;
         try {
-            if(userService.getUserByUsername(user.getUsername()) != null) throw new Exception("Username already exists!!");
             if(userService.getUserByEmail(user.getEmail()) != null) throw new Exception("Email already exist!!");
-                savedUser = userService.saveUser(user);
+            if(userService.getUserByUsername(user.getUsername()) != null) throw new Exception("Username already exists!!");
+            savedUser = userService.saveUser(user);
         } catch (Exception exception) {
             response.setHeader("error", exception.getMessage());
             response.setStatus(FORBIDDEN.value());
@@ -51,6 +53,21 @@ public class AuthController {
             new ObjectMapper().writeValue(response.getOutputStream(), error);
         }
         return ResponseEntity.created(uri).body(savedUser);
+    }
+
+    @PostMapping("/role/save")
+    public void saveRoleToUser(@RequestBody Map<String, String> user_role, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        try {
+            userService.addRoleToUser(user_role.get("username"), user_role.get("role"));
+        } catch (Exception exception) {
+
+            response.setHeader("error", exception.getMessage());
+            response.setStatus(FORBIDDEN.value());
+            Map<String, String> error = new HashMap<>();
+            error.put("message", exception.getMessage());
+            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+            new ObjectMapper().writeValue(response.getOutputStream(), error);
+        }
     }
 
     @GetMapping("/token/refresh")
