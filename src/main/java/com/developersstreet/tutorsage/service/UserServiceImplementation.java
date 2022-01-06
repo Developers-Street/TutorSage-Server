@@ -86,7 +86,7 @@ public class UserServiceImplementation implements UserService, UserDetailsServic
     }
 
     @Override
-    public UserData getUserDataByUser_id(Long userId) {
+    public UserData getUserDataByUserId(Long userId) {
         return userDataRepository.findByUserId(userId);
     }
 
