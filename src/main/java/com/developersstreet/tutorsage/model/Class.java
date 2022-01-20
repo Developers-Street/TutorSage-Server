@@ -17,7 +17,7 @@ import static javax.persistence.GenerationType.AUTO;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Class {
+public class Class extends AuditModel {
     @Id
     @GeneratedValue(strategy = AUTO)
     private Long id;
