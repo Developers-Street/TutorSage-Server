@@ -5,7 +5,9 @@ import com.developersstreet.tutorsage.model.User;
 import com.developersstreet.tutorsage.service.ClassService;
 import com.developersstreet.tutorsage.service.UtilityService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,6 +27,7 @@ import static org.springframework.http.HttpStatus.FORBIDDEN;
 @RestController
 @RequestMapping("/class")
 @RequiredArgsConstructor
+@Slf4j
 public class ClassController {
 
     private final ClassService classService;
@@ -48,4 +51,27 @@ public class ClassController {
             }
         }
     }
+
+    @PostMapping("/join")
+    public void joinClass(@RequestBody JoinClassForm classId, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String authorizationHeader = request.getHeader(AUTHORIZATION);
+        if(authorizationHeader != null && authorizationHeader.startsWith("Bearer")) {
+            try {
+                User user = utilityService.getUserByAuthorizationHeader(authorizationHeader);
+                classService.addMemberToClass(classId.getClassId(), user);
+            } catch (Exception exception) {
+                response.setHeader("error", exception.getMessage());
+                response.setStatus(FORBIDDEN.value());
+                Map<String, String> error = new HashMap<>();
+                error.put("message", exception.getMessage());
+                response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+                new ObjectMapper().writeValue(response.getOutputStream(), error);
+            }
+        }
+    }
+}
+
+@Data
+class JoinClassForm {
+    private Long classId;
 }
