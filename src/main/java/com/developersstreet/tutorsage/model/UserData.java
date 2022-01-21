@@ -16,7 +16,7 @@ import static javax.persistence.GenerationType.AUTO;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserData {
+public class UserData extends AuditModel {
     @Id @GeneratedValue(strategy = AUTO)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Long id;

@@ -16,7 +16,7 @@ import static javax.persistence.GenerationType.AUTO;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Role {
+public class Role extends AuditModel {
     @Id
     @GeneratedValue(strategy = AUTO)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
