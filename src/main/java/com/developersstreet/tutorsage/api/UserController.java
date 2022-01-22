@@ -20,22 +20,22 @@ import java.util.*;
 public class UserController {
     private final UserService userService;
 
-    @GetMapping("/users")
-    public ResponseEntity<List<User>> getUsers() {
-        return ResponseEntity.ok().body(userService.getUsers());
-    }
-
-    @PostMapping("/role/save")
-    public ResponseEntity<Role> saveRole(@RequestBody Role role) {
-        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("api/role/save").toUriString());
-        return ResponseEntity.created(uri).body(userService.saveRole(role));
-    }
-
-    @PostMapping("/user/addrole")
-    public ResponseEntity<?>addRoleToUser(@RequestBody RoleToUserForm form) {
-        userService.addRoleToUser(form.getUsername(), form.getRolename());
-        return ResponseEntity.ok().build();
-    }
+//    @GetMapping("/users")
+//    public ResponseEntity<List<User>> getUsers() {
+//        return ResponseEntity.ok().body(userService.getUsers());
+//    }
+//
+//    @PostMapping("/role/save")
+//    public ResponseEntity<Role> saveRole(@RequestBody Role role) {
+//        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("api/role/save").toUriString());
+//        return ResponseEntity.created(uri).body(userService.saveRole(role));
+//    }
+//
+//    @PostMapping("/user/addrole")
+//    public ResponseEntity<?>addRoleToUser(@RequestBody RoleToUserForm form) {
+//        userService.addRoleToUser(form.getUsername(), form.getRolename());
+//        return ResponseEntity.ok().build();
+//    }
 }
 
 @Data

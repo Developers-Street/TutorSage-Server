@@ -7,6 +7,7 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.developersstreet.tutorsage.model.Role;
 import com.developersstreet.tutorsage.model.User;
 import com.developersstreet.tutorsage.service.UserService;
+import com.developersstreet.tutorsage.service.UtilityService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +26,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
-import static org.springframework.http.HttpStatus.FORBIDDEN;
 
 @RestController
 @RequestMapping("/auth")
@@ -35,6 +35,7 @@ import static org.springframework.http.HttpStatus.FORBIDDEN;
 public class AuthController {
 
     private final UserService userService;
+    private final UtilityService utilityService;
 
     @PostMapping("/signup")
     public ResponseEntity<User> registerUser(@Valid @RequestBody User user, HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -45,12 +46,7 @@ public class AuthController {
             if(userService.getUserByUsername(user.getUsername()) != null) throw new Exception("Username already exists!!");
             savedUser = userService.saveUser(user);
         } catch (Exception exception) {
-            response.setHeader("error", exception.getMessage());
-            response.setStatus(FORBIDDEN.value());
-            Map<String, String> error = new HashMap<>();
-            error.put("message", exception.getMessage());
-            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-            new ObjectMapper().writeValue(response.getOutputStream(), error);
+            utilityService.setExceptionResponse(exception, response);
         }
         return ResponseEntity.created(uri).body(savedUser);
     }
@@ -60,13 +56,7 @@ public class AuthController {
         try {
             userService.addRoleToUser(user_role.get("username"), user_role.get("role"));
         } catch (Exception exception) {
-
-            response.setHeader("error", exception.getMessage());
-            response.setStatus(FORBIDDEN.value());
-            Map<String, String> error = new HashMap<>();
-            error.put("message", exception.getMessage());
-            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-            new ObjectMapper().writeValue(response.getOutputStream(), error);
+            utilityService.setExceptionResponse(exception, response);
         }
     }
 
@@ -93,14 +83,7 @@ public class AuthController {
                 response.setContentType(MediaType.APPLICATION_JSON_VALUE);
                 new ObjectMapper().writeValue(response.getOutputStream(), tokens);
             } catch (Exception exception) {
-//                response.setHeader("error", exception.getMessage());
-//                response.setStatus(FORBIDDEN.value());
-//                Map<String, String> error = new HashMap<>();
-//                error.put("error_message", exception.getMessage());
-//                response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-//                new ObjectMapper().writeValue(response.getOutputStream(), error);
-                response.setStatus(FORBIDDEN.value());
-                new ObjectMapper().writeValue(response.getOutputStream(), exception.getMessage());
+                utilityService.setExceptionResponse(exception,response);
             }
         } else {
             throw new RuntimeException("Refresh token is missing");
