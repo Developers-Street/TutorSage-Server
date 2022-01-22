@@ -92,8 +92,13 @@ public class UserServiceImplementation implements UserService, UserDetailsServic
     }
 
     @Override
-    public List<User> getUsers() {
+    public List<User> getUsers(String query) {
         log.info("Fetching all users");
-        return userRepository.findAll();
+        return userRepository.findUsersByUsernameContains(query);
+    }
+
+    @Override
+    public User getUserById(Long Id) {
+        return userRepository.findUserById(Id);
     }
 }
