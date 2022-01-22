@@ -2,7 +2,6 @@ package com.developersstreet.tutorsage.api;
 
 import com.developersstreet.tutorsage.model.User;
 import com.developersstreet.tutorsage.model.UserData;
-import com.developersstreet.tutorsage.model.UserMerged;
 import com.developersstreet.tutorsage.service.UserService;
 import com.developersstreet.tutorsage.service.UtilityService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -32,8 +31,7 @@ public class MeController {
         String authorizationHeader = request.getHeader(AUTHORIZATION);
         try {
             User user = utilityService.getUserByAuthorizationHeader(authorizationHeader);
-            userData.setUserId(user.getId());
-            userService.saveUserData(userData);
+            userService.saveUserData(user, userData);
         } catch (Exception exception) {
             utilityService.setExceptionResponse(exception, response);
         }
@@ -44,9 +42,8 @@ public class MeController {
         String authorizationHeader = request.getHeader(AUTHORIZATION);
         try {
             User user = utilityService.getUserByAuthorizationHeader(authorizationHeader);
-            UserMerged userMerged = userService.getUserMergedByUserId(user.getUsername(), user.getId());
             response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-            new ObjectMapper().writeValue(response.getOutputStream(), userMerged);
+            new ObjectMapper().writeValue(response.getOutputStream(), user);
         } catch (Exception exception) {
             utilityService.setExceptionResponse(exception, response);
         }

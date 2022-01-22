@@ -3,7 +3,6 @@ package com.developersstreet.tutorsage.service;
 import com.developersstreet.tutorsage.model.Role;
 import com.developersstreet.tutorsage.model.User;
 import com.developersstreet.tutorsage.model.UserData;
-import com.developersstreet.tutorsage.model.UserMerged;
 import com.developersstreet.tutorsage.repository.RoleRepository;
 import com.developersstreet.tutorsage.repository.UserDataRepository;
 import com.developersstreet.tutorsage.repository.UserRepository;
@@ -56,8 +55,10 @@ public class UserServiceImplementation implements UserService, UserDetailsServic
     }
 
     @Override
-    public UserData saveUserData(UserData userData) {
-        return userDataRepository.save(userData);
+    public void saveUserData(User user, UserData userData) {
+        log.info(userData.getFirstName());
+        log.info(user.getUsername());
+        user.setUserData(userData);
     }
 
     @Override
@@ -81,19 +82,13 @@ public class UserServiceImplementation implements UserService, UserDetailsServic
     }
 
     @Override
-    public UserMerged getUserMergedByUserId(String username, Long userId) {
-        UserMerged userMerged = new UserMerged(userRepository.findByUsername(username), userDataRepository.findByUserId(userId));
-        return userMerged;
-    }
-
-    @Override
     public User getUserByEmail(String email) {
         return userRepository.findByEmail(email);
     }
 
     @Override
     public UserData getUserDataByUserId(Long userId) {
-        return userDataRepository.findByUserId(userId);
+        return userDataRepository.findUserDataById(userId);
     }
 
     @Override

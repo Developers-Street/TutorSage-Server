@@ -41,6 +41,9 @@ public class User extends AuditModel {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
+    @OneToOne(fetch = EAGER, cascade = CascadeType.ALL)
+    private UserData userData;
+
     @ManyToMany(fetch = EAGER)
     private Collection<Role> roles = new ArrayList<>();
 }
