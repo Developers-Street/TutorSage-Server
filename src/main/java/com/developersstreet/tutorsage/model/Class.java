@@ -1,8 +1,11 @@
 package com.developersstreet.tutorsage.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 
@@ -24,9 +27,10 @@ public class Class extends AuditModel {
 
     private String name;
 
-    @ManyToOne(fetch = LAZY)
+    @ManyToOne(fetch = EAGER)
     private User creator;
 
-    @ManyToMany(fetch = EAGER)
+    @ManyToMany
+    @LazyCollection(LazyCollectionOption.FALSE)
     private Collection<User> members = new ArrayList<>();
 }

@@ -15,6 +15,6 @@ public interface UserService {
     User getUserByUsername(String username);
     User getUserByEmail(String email);
     UserData getUserDataByUserId(Long user_id);
-    List<User>getUsers(String query);
+    List<User>getUsersByQueryAndOffsetAndLimit(String query, Long offset, Long limit) throws Exception;
     User getUserById(Long Id);
 }

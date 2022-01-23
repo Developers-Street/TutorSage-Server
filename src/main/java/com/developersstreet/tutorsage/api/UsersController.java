@@ -7,7 +7,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -29,8 +28,7 @@ public class UsersController {
             String query = request.getParameter("query");
             Long offset = Long.parseLong(request.getParameter("offset"));
             Long limit = Long.parseLong(request.getParameter("limit"));
-            List<User> users = userService.getUsers(query);
-            if(users.size() == 0) throw new Exception("No Users found");
+            List<User> users = userService.getUsersByQueryAndOffsetAndLimit(query, offset, limit);
             new ObjectMapper().writeValue(response.getOutputStream(), users);
         } catch (Exception exception) {
             utilityService.setExceptionResponse(exception, response);

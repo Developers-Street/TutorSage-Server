@@ -92,9 +92,14 @@ public class UserServiceImplementation implements UserService, UserDetailsServic
     }
 
     @Override
-    public List<User> getUsers(String query) {
-        log.info("Fetching all users");
-        return userRepository.findUsersByUsernameContains(query);
+    public List<User> getUsersByQueryAndOffsetAndLimit(String query, Long offset, Long limit) throws Exception {
+        List<User> users = userRepository.findUsersByUsernameContains(query);
+        if(users.size() == 0) throw new Exception("No Users found");
+        Long fromIndex = limit * (offset - 1);
+        Long toIndex = limit * (offset - 1) + limit;
+        if(users.size() < toIndex) users = users.subList(Integer.parseInt(fromIndex.toString()), users.size());
+        else users = users.subList(Integer.parseInt(fromIndex.toString()), Integer.parseInt(toIndex.toString()));
+        return users;
     }
 
     @Override
