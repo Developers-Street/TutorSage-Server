@@ -40,8 +40,10 @@ public class ClassServiceImplementation implements ClassService {
     }
 
     @Override
-    public void addMemberToClass(Long classId, User user) {
+    public Class addMemberToClass(Long classId, User user) throws Exception {
          Class c = classRepository.findClassById(classId);
+         if(c.getMembers().contains(user)) throw new Exception("You are already a class member");
          c.getMembers().add(user);
+         return c;
     }
 }

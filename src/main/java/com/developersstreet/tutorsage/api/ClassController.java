@@ -3,6 +3,7 @@ package com.developersstreet.tutorsage.api;
 import com.developersstreet.tutorsage.model.Class;
 import com.developersstreet.tutorsage.model.User;
 import com.developersstreet.tutorsage.service.ClassService;
+import com.developersstreet.tutorsage.service.UserService;
 import com.developersstreet.tutorsage.service.UtilityService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
@@ -26,6 +27,7 @@ public class ClassController {
 
     private final ClassService classService;
     private final UtilityService utilityService;
+    private final UserService userService;
 
     @GetMapping("/")
     public void getClasses(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -68,7 +70,7 @@ public class ClassController {
         String authorizationHeader = request.getHeader(AUTHORIZATION);
         try {
             User user = utilityService.getUserByAuthorizationHeader(authorizationHeader);
-            classService.addMemberToClass(classId.getClassId(), user);
+            Class c = classService.addMemberToClass(classId.getClassId(), user);
         } catch (Exception exception) {
             utilityService.setExceptionResponse(exception, response);
         }

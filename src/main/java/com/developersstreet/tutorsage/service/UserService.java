@@ -1,5 +1,6 @@
 package com.developersstreet.tutorsage.service;
 
+import com.developersstreet.tutorsage.model.Class;
 import com.developersstreet.tutorsage.model.Role;
 import com.developersstreet.tutorsage.model.User;
 import com.developersstreet.tutorsage.model.UserData;
@@ -14,7 +15,6 @@ public interface UserService {
     void addRoleToUser(String username, String roleName);
     User getUserByUsername(String username);
     User getUserByEmail(String email);
-    UserData getUserDataByUserId(Long user_id);
     List<User>getUsersByQueryAndOffsetAndLimit(String query, Long offset, Long limit) throws Exception;
     User getUserById(Long Id);
 }

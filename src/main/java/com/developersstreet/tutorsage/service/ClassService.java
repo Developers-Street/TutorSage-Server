@@ -9,5 +9,5 @@ public interface ClassService {
     Class createClass(Class c);
     Class getClassById(Long id);
     List<Class> getClassesByQueryAndOffsetAndLimit(String query, Long offset, Long limit) throws Exception;
-    void addMemberToClass(Long classId, User user);
+    Class addMemberToClass(Long classId, User user) throws Exception;
 }

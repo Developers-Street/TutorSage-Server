@@ -6,11 +6,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
+import org.hibernate.validator.constraints.UniqueElements;
 
 import javax.persistence.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Set;
 
 import static javax.persistence.FetchType.EAGER;
 import static javax.persistence.FetchType.LAZY;
@@ -32,5 +34,5 @@ public class Class extends AuditModel {
 
     @ManyToMany
     @LazyCollection(LazyCollectionOption.FALSE)
-    private Collection<User> members = new ArrayList<>();
+    private Set<User> members;
 }
