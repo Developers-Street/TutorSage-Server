@@ -1,6 +1,7 @@
 package com.developersstreet.tutorsage.service;
 
 import com.developersstreet.tutorsage.model.Class;
+import com.developersstreet.tutorsage.model.Quiz;
 import com.developersstreet.tutorsage.model.User;
 import com.developersstreet.tutorsage.repository.ClassRepository;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +33,12 @@ public class ClassServiceImplementation implements ClassService {
         if(classes.size() < toIndex) classes = classes.subList(Integer.parseInt(fromIndex.toString()), classes.size());
         else classes = classes.subList(Integer.parseInt(fromIndex.toString()), Integer.parseInt(toIndex.toString()));
         return classes;
+    }
+
+    @Override
+    public void addQuizToClass(Long classId, Quiz quiz) {
+        Class c = classRepository.findClassById(classId);
+        c.getQuizzes().add(quiz);
     }
 
     @Override

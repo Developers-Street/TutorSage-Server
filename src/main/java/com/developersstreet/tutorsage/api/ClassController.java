@@ -27,7 +27,6 @@ public class ClassController {
 
     private final ClassService classService;
     private final UtilityService utilityService;
-    private final UserService userService;
 
     @GetMapping("/")
     public void getClasses(HttpServletRequest request, HttpServletResponse response) throws IOException {
