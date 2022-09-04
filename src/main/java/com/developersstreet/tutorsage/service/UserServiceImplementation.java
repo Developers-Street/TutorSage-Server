@@ -1,11 +1,9 @@
 package com.developersstreet.tutorsage.service;
 
-import com.developersstreet.tutorsage.model.Class;
 import com.developersstreet.tutorsage.model.Role;
 import com.developersstreet.tutorsage.model.User;
 import com.developersstreet.tutorsage.model.UserData;
 import com.developersstreet.tutorsage.repository.RoleRepository;
-import com.developersstreet.tutorsage.repository.UserDataRepository;
 import com.developersstreet.tutorsage.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,7 +27,6 @@ public class UserServiceImplementation implements UserService, UserDetailsServic
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
-    private final UserDataRepository userDataRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Override

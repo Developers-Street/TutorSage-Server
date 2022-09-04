@@ -3,12 +3,10 @@ package com.developersstreet.tutorsage.api;
 import com.developersstreet.tutorsage.model.Class;
 import com.developersstreet.tutorsage.model.User;
 import com.developersstreet.tutorsage.service.ClassService;
-import com.developersstreet.tutorsage.service.UserService;
 import com.developersstreet.tutorsage.service.UtilityService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,12 +20,10 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 @RestController
 @RequestMapping("/class")
 @RequiredArgsConstructor
-@Slf4j
 public class ClassController {
 
     private final ClassService classService;
     private final UtilityService utilityService;
-    private final UserService userService;
 
     @GetMapping("/")
     public void getClasses(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -67,10 +63,10 @@ public class ClassController {
 
     @PostMapping("/join")
     public void joinClass(@RequestBody JoinClassForm classId, HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String authorizationHeader = request.getHeader(AUTHORIZATION);
+        // String authorizationHeader = request.getHeader(AUTHORIZATION);
         try {
-            User user = utilityService.getUserByAuthorizationHeader(authorizationHeader);
-            Class c = classService.addMemberToClass(classId.getClassId(), user);
+            // User user = utilityService.getUserByAuthorizationHeader(authorizationHeader);
+            // Class c = classService.addMemberToClass(classId.getClassId(), user);
         } catch (Exception exception) {
             utilityService.setExceptionResponse(exception, response);
         }

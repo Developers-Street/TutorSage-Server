@@ -1,7 +1,6 @@
 package com.developersstreet.tutorsage;
 
 import com.developersstreet.tutorsage.model.Role;
-import com.developersstreet.tutorsage.model.User;
 import com.developersstreet.tutorsage.service.UserService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
