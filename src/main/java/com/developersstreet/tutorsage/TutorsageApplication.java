@@ -43,6 +43,7 @@ public class TutorsageApplication {
 			ArrayList<String> roles = new ArrayList<>();
 			roles.add("ROLE_TUTOR");
 			roles.add("ROLE_STUDENT");
+			roles.add("ROLE_ORGANIZATION_ADMIN");
 
 			for(int i = 0; i < roles.size(); i++) {
 				try {
