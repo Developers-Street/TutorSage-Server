@@ -11,25 +11,31 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.developersstreet.tutorsage.model.Organization;
+import com.developersstreet.tutorsage.model.Role;
 import com.developersstreet.tutorsage.model.User;
 import com.developersstreet.tutorsage.service.OrganizationService;
+import com.developersstreet.tutorsage.service.UserService;
 import com.developersstreet.tutorsage.service.UtilityService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 @RestController
 @RequestMapping("/organization")
 @RequiredArgsConstructor
+@Slf4j
 public class OrganizationController {
     
     private final OrganizationService organizationService;
     private final UtilityService utilityService;
+    private final UserService userService;
 
     @GetMapping("/")
     public void getOrganizations(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -66,5 +72,30 @@ public class OrganizationController {
         } catch(Exception exception) {
             utilityService.setExceptionResponse(exception, response);
         }
+    }
+    
+    @PostMapping("/join")
+    public void joinOrganization(@RequestParam Long organizationId, @RequestParam Long roleId, HttpServletRequest request, HttpServletResponse response) throws IOException {
+    	log.info("Request Recieved");
+    	String authorizationHeader = request.getHeader(AUTHORIZATION);
+    	try {
+    		User user = utilityService.getUserByAuthorizationHeader(authorizationHeader);
+    		Role role = userService.getRoleById(roleId);
+    		organizationService.joinOrganization(organizationId, user, role);
+    	} catch(Exception exception) {
+    		utilityService.setExceptionResponse(exception, response);
+    	}
+    }
+    
+    @PostMapping("/student/join")
+    public void joinOrganizationAsStudent(@RequestParam Long organizationId, HttpServletRequest request, HttpServletResponse response) throws IOException {
+    	String authorizationHeader = request.getHeader(AUTHORIZATION);
+    	log.info("Request recieved");
+    	try {
+    		User user = utilityService.getUserByAuthorizationHeader(authorizationHeader);
+    		organizationService.joinOrganizationAsStudent(organizationId, user);
+    	} catch(Exception exception) {
+    		utilityService.setExceptionResponse(exception, response);
+    	}
     }
 }

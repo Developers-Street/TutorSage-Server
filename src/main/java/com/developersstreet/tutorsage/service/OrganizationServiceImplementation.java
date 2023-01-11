@@ -7,7 +7,11 @@ import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import com.developersstreet.tutorsage.model.Organization;
+import com.developersstreet.tutorsage.model.Role;
+import com.developersstreet.tutorsage.model.User;
+import com.developersstreet.tutorsage.model.UserOrganizationRoles;
 import com.developersstreet.tutorsage.repository.OrganizationRepository;
+import com.developersstreet.tutorsage.repository.UserOrganizationRolesRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -17,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 public class OrganizationServiceImplementation implements OrganizationService {
     
     private final OrganizationRepository organizationRepository;
+    private final UserOrganizationRolesRepository userOrganizationRolesRepository;
 
     @Override
     public Organization getOrganizationById(Long id) {
@@ -38,4 +43,18 @@ public class OrganizationServiceImplementation implements OrganizationService {
     public Organization createOrganization(Organization o) {
         return organizationRepository.save(o);
     }
+
+	@Override
+	public void joinOrganizationAsStudent(Long id, User user) {
+		Organization o = organizationRepository.findOrganizationById(id);
+		o.addStudent(user);
+		organizationRepository.save(o);
+	}
+
+	@Override
+	public void joinOrganization(Long id, User user, Role role) {
+		Organization o = organizationRepository.findOrganizationById(id);
+		UserOrganizationRoles userOrganizationRoles = new UserOrganizationRoles(o, role, user);
+		userOrganizationRolesRepository.save(userOrganizationRoles);
+	}
 }

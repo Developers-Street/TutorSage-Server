@@ -99,4 +99,9 @@ public class UserServiceImplementation implements UserService, UserDetailsServic
     public User getUserById(Long Id) {
         return userRepository.findUserById(Id);
     }
+
+	@Override
+	public Role getRoleById(Long id) {
+		return roleRepository.getById(id);
+	}
 }

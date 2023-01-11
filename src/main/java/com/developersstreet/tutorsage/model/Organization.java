@@ -46,8 +46,9 @@ public class Organization extends AuditModel {
     private User admin;
 
     @ManyToMany(fetch = EAGER)
-    private Set<User> teachers;
-
-    @ManyToMany(fetch = EAGER)
     private Set<User> students;
+    
+    public void addStudent(User user) {
+    	students.add(user);
+    }
 }
