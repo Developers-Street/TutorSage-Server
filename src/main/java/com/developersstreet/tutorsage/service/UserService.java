@@ -10,6 +10,7 @@ public interface UserService {
     User saveUser(User user) throws Exception;
     Role saveRole(Role role);
     Role getRoleById(Long id);
+    boolean isStudent(Long id);
     void saveUserData(User user, UserData userData) throws Exception;
 
     void addRoleToUser(String username, String roleName);

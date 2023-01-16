@@ -2,6 +2,7 @@ package com.developersstreet.tutorsage.model;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.FetchType.EAGER;
 import static javax.persistence.GenerationType.AUTO;
 

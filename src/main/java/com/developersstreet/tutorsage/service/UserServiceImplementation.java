@@ -18,6 +18,7 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -103,5 +104,11 @@ public class UserServiceImplementation implements UserService, UserDetailsServic
 	@Override
 	public Role getRoleById(Long id) {
 		return roleRepository.getById(id);
+	}
+
+	@Override
+	public boolean isStudent(Long id) {
+		Set<Role> roles = userRepository.getById(id).getRoles();
+		return roles.stream().anyMatch(r -> "ROLE_STUDENT".equals(r.getName()));
 	}
 }

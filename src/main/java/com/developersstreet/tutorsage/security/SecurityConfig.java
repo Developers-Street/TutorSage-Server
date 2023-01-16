@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -20,6 +21,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import static org.springframework.http.HttpMethod.POST;
+import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
 @Configuration @EnableWebSecurity @RequiredArgsConstructor @Slf4j
@@ -51,7 +53,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers("/auth/**", "/").permitAll();
         http.authorizeRequests().antMatchers(POST, "/class/create").hasAuthority("ROLE_TUTOR");
         http.authorizeRequests().antMatchers(POST,"/class/join").hasAuthority("ROLE_STUDENT");
-//        http.authorizeRequests().antMatchers(POST,"/organization/student/join").hasAuthority("ROLE_STUDENT");
+        http.authorizeRequests().antMatchers(POST,"/organization/student/join").hasAuthority("ROLE_STUDENT");
+        http.authorizeRequests().antMatchers(GET, "/organization").hasAuthority("ROLE_STUDENT");
         http.authorizeRequests().anyRequest().authenticated();
         http.addFilter(customAuthenticationFilter);
         http.addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);

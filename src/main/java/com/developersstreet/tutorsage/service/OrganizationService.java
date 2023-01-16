@@ -1,6 +1,7 @@
 package com.developersstreet.tutorsage.service;
 
 import java.util.List;
+import java.util.Set;
 
 import com.developersstreet.tutorsage.model.Organization;
 import com.developersstreet.tutorsage.model.Role;
@@ -11,5 +12,7 @@ public interface OrganizationService {
     Organization getOrganizationById(Long id);
     void joinOrganizationAsStudent(Long id, User user);
     void joinOrganization(Long id, User user, Role role);
+    Set<Organization> getMyOrganization(User user);
+    List<Organization> getMyOrganizationAsStudent(User user);
     List<Organization> getOrganizationsByQueryAndOffsetAndLimit(String query, Long offset, Long limit) throws Exception;
 }

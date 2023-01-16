@@ -2,6 +2,7 @@ package com.developersstreet.tutorsage.api;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -48,6 +49,25 @@ public class OrganizationController {
         } catch (Exception exception) {
             utilityService.setExceptionResponse(exception, response);
         }
+    }
+    
+    @GetMapping("/me")
+    public void getMyOrganizations(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    	String authorizationHeader = request.getHeader(AUTHORIZATION);
+    	try {
+    		User user = utilityService.getUserByAuthorizationHeader(authorizationHeader);
+    		boolean isStudent = userService.isStudent(user.getId());
+    		if(isStudent) {
+    			List<Organization> organizations = organizationService.getMyOrganizationAsStudent(user);
+    			new ObjectMapper().writeValue(response.getOutputStream(), organizations);
+    		}
+    		else {
+    			Set<Organization> organizations = organizationService.getMyOrganization(user);
+    			new ObjectMapper().writeValue(response.getOutputStream(), organizations);
+    		}
+    	} catch(Exception exception) {
+    		utilityService.setExceptionResponse(exception, response);
+    	}
     }
 
     @GetMapping("/{id}")

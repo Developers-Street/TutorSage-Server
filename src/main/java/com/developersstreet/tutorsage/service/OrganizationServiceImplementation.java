@@ -1,6 +1,8 @@
 package com.developersstreet.tutorsage.service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.transaction.Transactional;
 
@@ -56,5 +58,19 @@ public class OrganizationServiceImplementation implements OrganizationService {
 		Organization o = organizationRepository.findOrganizationById(id);
 		UserOrganizationRoles userOrganizationRoles = new UserOrganizationRoles(o, role, user);
 		userOrganizationRolesRepository.save(userOrganizationRoles);
+	}
+
+	@Override
+	public Set<Organization> getMyOrganization(User user) {
+		List<Organization> organizations = organizationRepository.findOrganizationsByAdmin(user);
+		Set<Organization> myOrganizations = organizationRepository.findMyOrganization(user);
+		myOrganizations.addAll(organizations);
+		return myOrganizations;
+	}
+
+	@Override
+	public List<Organization> getMyOrganizationAsStudent(User user) {
+		List<Organization> organizations = organizationRepository.findOrganizationsByStudentsContains(user);
+		return organizations;
 	}
 }
