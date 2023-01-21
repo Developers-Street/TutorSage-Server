@@ -8,6 +8,7 @@ import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
 
+import com.developersstreet.tutorsage.model.Course;
 import com.developersstreet.tutorsage.model.Organization;
 import com.developersstreet.tutorsage.model.Role;
 import com.developersstreet.tutorsage.model.User;
@@ -39,6 +40,13 @@ public class OrganizationServiceImplementation implements OrganizationService {
         if(organizations.size() < toIndex) organizations = organizations.subList(Integer.parseInt(fromIndex.toString()), organizations.size());
         else organizations = organizations.subList(Integer.parseInt(fromIndex.toString()), Integer.parseInt(toIndex.toString()));
         return organizations;
+    }
+    
+    @Override
+    public Set<Course> getCoursesByOrganizationId(Long organizationId, String query, Long offset, Long limit) {
+    	Organization o = organizationRepository.findOrganizationById(organizationId);
+    	Set<Course> courses = o.getCourses();
+    	return courses;
     }
 
     @Override
@@ -72,5 +80,23 @@ public class OrganizationServiceImplementation implements OrganizationService {
 	public List<Organization> getMyOrganizationAsStudent(User user) {
 		List<Organization> organizations = organizationRepository.findOrganizationsByStudentsContains(user);
 		return organizations;
+	}
+
+	@Override
+	public boolean isUserPartOfOrganization(Organization organization, User user) {
+		if(organization.getAdmin().equals(user)) return true;
+		List<UserOrganizationRoles> userOrganizationRoles = userOrganizationRolesRepository.findByUserAndOrganization(user, organization);
+		if(userOrganizationRoles.size() > 0) return true;
+		return false;
+	}
+
+	@Override
+	public boolean isUserAdminOfOrganization(Organization organization, User user) {
+		return organization.getAdmin().equals(user);
+	}
+
+	@Override
+	public boolean isCoursePartOfOrganization(Organization organization, Course course) {
+		return organization.checkIfCourse(course);
 	}
 }

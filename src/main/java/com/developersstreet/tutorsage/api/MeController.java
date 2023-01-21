@@ -46,5 +46,16 @@ public class MeController {
             utilityService.setExceptionResponse(exception, response);
         }
     }
+    
+    @PostMapping("/profile/update")
+    public void updateUserProfile(@Valid @RequestBody UserData userData, HttpServletRequest request, HttpServletResponse response) throws IOException {
+    	String authorizationHeader = request.getHeader(AUTHORIZATION);
+    	try {
+    		User user = utilityService.getUserByAuthorizationHeader(authorizationHeader);
+    		userService.updateUserData(user, userData);
+    	} catch (Exception exception) {
+    		utilityService.setExceptionResponse(exception, response);
+		}
+    }
 }
 

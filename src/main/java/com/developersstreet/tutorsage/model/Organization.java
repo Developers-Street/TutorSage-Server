@@ -1,7 +1,9 @@
 package com.developersstreet.tutorsage.model;
 
 import javax.persistence.Entity;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
+import static javax.persistence.EnumType.STRING;
 import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.FetchType.EAGER;
 import static javax.persistence.GenerationType.AUTO;
@@ -12,9 +14,12 @@ import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+
+import com.developersstreet.tutorsage.enums.OrganizationType;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -39,6 +44,10 @@ public class Organization extends AuditModel {
     @NotBlank(message = "Organization email cannot be blank")
     @Email(message = "Email is not valid")
     private String email;
+    
+    @Column(columnDefinition = "ENUM('school', 'college', 'coaching')")
+    @Enumerated(STRING)
+    private OrganizationType type;
 
     @ManyToOne(fetch = EAGER)
     private User creator;
@@ -49,7 +58,22 @@ public class Organization extends AuditModel {
     @ManyToMany(fetch = EAGER)
     private Set<User> students;
     
+    @OneToMany(fetch = EAGER)
+    private Set<Course> courses;
+    
     public void addStudent(User user) {
     	students.add(user);
+    }
+    
+    public void addCourses(Course course) {
+    	courses.add(course);
+    }
+    
+    public boolean checkIfStudent(User user) {
+    	return students.contains(user);
+    }
+    
+    public boolean checkIfCourse(Course course) {
+    	return courses.contains(course);
     }
 }

@@ -22,7 +22,10 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import static org.springframework.http.HttpMethod.POST;
 import static org.springframework.http.HttpMethod.GET;
+import static org.springframework.http.HttpMethod.PUT;
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
+
+import java.util.Arrays;
 
 @Configuration @EnableWebSecurity @RequiredArgsConstructor @Slf4j
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -33,7 +36,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
+        CorsConfiguration config = new CorsConfiguration().applyPermitDefaultValues();
+        
+        config.addAllowedMethod(PUT);
+        
+        source.registerCorsConfiguration("/**", config);
         return source;
     }
 

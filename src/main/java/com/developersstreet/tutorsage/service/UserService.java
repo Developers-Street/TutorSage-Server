@@ -12,6 +12,7 @@ public interface UserService {
     Role getRoleById(Long id);
     boolean isStudent(Long id);
     void saveUserData(User user, UserData userData) throws Exception;
+    void updateUserData(User user, UserData userData) throws Exception;
 
     void addRoleToUser(String username, String roleName);
     User getUserByUsername(String username);

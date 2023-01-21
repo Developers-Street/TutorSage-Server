@@ -1,8 +1,8 @@
 package com.developersstreet.tutorsage.api;
 
-import com.developersstreet.tutorsage.model.Class;
+import com.developersstreet.tutorsage.model.Course;
 import com.developersstreet.tutorsage.model.User;
-import com.developersstreet.tutorsage.service.ClassService;
+import com.developersstreet.tutorsage.service.CourseService;
 import com.developersstreet.tutorsage.service.UtilityService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
@@ -18,31 +18,31 @@ import java.util.List;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 @RestController
-@RequestMapping("/class")
+@RequestMapping("/course")
 @RequiredArgsConstructor
-public class ClassController {
+public class CourseController {
 
-    private final ClassService classService;
+    private final CourseService courseService;
     private final UtilityService utilityService;
 
     @GetMapping("/")
-    public void getClasses(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void getCourses(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
             String query = request.getParameter("query");
             Long offset = Long.parseLong(request.getParameter("offset"));
             Long limit = Long.parseLong(request.getParameter("limit"));
-            List<Class> classes = classService.getClassesByQueryAndOffsetAndLimit(query, offset, limit);
-            new ObjectMapper().writeValue(response.getOutputStream(), classes);
+            List<Course> courses = courseService.getCoursesByQueryAndOffsetAndLimit(query, offset, limit);
+            new ObjectMapper().writeValue(response.getOutputStream(), courses);
         } catch (Exception exception) {
             utilityService.setExceptionResponse(exception, response);
         }
     }
 
     @GetMapping("/{id}")
-    public void getOneClass(@PathVariable Long id, HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void getOneCourse(@PathVariable Long id, HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
-            Class c = classService.getClassById(id);
-            if(c == null) throw new Exception("Class not found");
+            Course c = courseService.getCourseById(id);
+            if(c == null) throw new Exception("Course not found");
             new ObjectMapper().writeValue(response.getOutputStream(), c);
         } catch (Exception exception) {
             utilityService.setExceptionResponse(exception, response);
@@ -50,23 +50,22 @@ public class ClassController {
     }
 
     @PostMapping("/create")
-    public void createClass(@RequestBody Class c, HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void createCourse(@RequestBody Course c, HttpServletRequest request, HttpServletResponse response) throws IOException {
         String authorizationHeader = request.getHeader(AUTHORIZATION);
         try {
             User user = utilityService.getUserByAuthorizationHeader(authorizationHeader);
-            c.setCreator(user);
-            classService.createClass(c);
+            courseService.createCourse(c, user, null);
         } catch (Exception exception) {
             utilityService.setExceptionResponse(exception, response);
         }
     }
 
     @PostMapping("/join")
-    public void joinClass(@RequestBody JoinClassForm classId, HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void joinCourse(@RequestBody JoinCourseForm courseId, HttpServletRequest request, HttpServletResponse response) throws IOException {
         // String authorizationHeader = request.getHeader(AUTHORIZATION);
         try {
             // User user = utilityService.getUserByAuthorizationHeader(authorizationHeader);
-            // Class c = classService.addMemberToClass(classId.getClassId(), user);
+            // Course c = courseService.addMemberToCourse(courseId.getCourseId(), user);
         } catch (Exception exception) {
             utilityService.setExceptionResponse(exception, response);
         }
@@ -74,6 +73,6 @@ public class ClassController {
 }
 
 @Data
-class JoinClassForm {
-    private Long classId;
+class JoinCourseForm {
+    private Long courseId;
 }

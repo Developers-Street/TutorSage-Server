@@ -4,6 +4,7 @@ import com.developersstreet.tutorsage.model.Role;
 import com.developersstreet.tutorsage.model.User;
 import com.developersstreet.tutorsage.model.UserData;
 import com.developersstreet.tutorsage.repository.RoleRepository;
+import com.developersstreet.tutorsage.repository.UserDataRepository;
 import com.developersstreet.tutorsage.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +28,7 @@ import java.util.Set;
 public class UserServiceImplementation implements UserService, UserDetailsService {
 
     private final UserRepository userRepository;
+    private final UserDataRepository userDataRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
 
@@ -58,6 +60,12 @@ public class UserServiceImplementation implements UserService, UserDetailsServic
         log.info(userData.getFirstName());
         log.info(user.getUsername());
         user.setUserData(userData);
+    }
+    
+    @Override 
+    public void updateUserData(User user, UserData userData) throws Exception {
+    	if(!user.getUserData().getId().equals(userData.getId())) throw new Exception("You are not authorized to perform this task");
+    	userDataRepository.save(userData);
     }
 
     @Override
