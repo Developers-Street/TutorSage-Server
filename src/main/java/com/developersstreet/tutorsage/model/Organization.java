@@ -45,6 +45,10 @@ public class Organization extends AuditModel {
     @Email(message = "Email is not valid")
     private String email;
     
+    private String description;
+    
+    private String logoUrl;
+    
     @Column(columnDefinition = "ENUM('school', 'college', 'coaching')")
     @Enumerated(STRING)
     private OrganizationType type;

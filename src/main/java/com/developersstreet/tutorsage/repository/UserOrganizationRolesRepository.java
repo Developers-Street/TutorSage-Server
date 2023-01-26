@@ -10,4 +10,5 @@ import com.developersstreet.tutorsage.model.UserOrganizationRoles;
 
 public interface UserOrganizationRolesRepository extends JpaRepository<UserOrganizationRoles, Long> {
 	List<UserOrganizationRoles> findByUserAndOrganization(User user, Organization organization);
+	List<UserOrganizationRoles> findByOrganization(Organization organization);
 }

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.developersstreet.tutorsage.dto.OrganizationDTO;
 import com.developersstreet.tutorsage.model.Course;
 import com.developersstreet.tutorsage.model.Organization;
 import com.developersstreet.tutorsage.model.Role;
@@ -125,9 +126,8 @@ public class OrganizationController {
     @GetMapping("/{id}")
     public void getOneOrganization(@PathVariable Long id, HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
-            Organization o = organizationService.getOrganizationById(id);
-            if(o == null) throw new Exception("Organization not found");
-            new ObjectMapper().writeValue(response.getOutputStream(), o);
+        	OrganizationDTO organizationDTO = organizationService.getOrganizationDetails(id);
+            new ObjectMapper().writeValue(response.getOutputStream(), organizationDTO);
         } catch(Exception exception) {
             utilityService.setExceptionResponse(exception, response);
         }

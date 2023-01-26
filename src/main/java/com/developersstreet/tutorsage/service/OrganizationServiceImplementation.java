@@ -1,13 +1,14 @@
 package com.developersstreet.tutorsage.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
 import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
+import com.developersstreet.tutorsage.dto.OrganizationDTO;
 import com.developersstreet.tutorsage.model.Course;
 import com.developersstreet.tutorsage.model.Organization;
 import com.developersstreet.tutorsage.model.Role;
@@ -29,6 +30,17 @@ public class OrganizationServiceImplementation implements OrganizationService {
     @Override
     public Organization getOrganizationById(Long id) {
         return organizationRepository.findOrganizationById(id);
+    }
+    
+    @Override
+    public OrganizationDTO getOrganizationDetails(Long id) throws Exception {
+    	Organization organization = getOrganizationById(id);
+    	if(organization == null) throw new Exception("Organization not found!!");
+    	List<UserOrganizationRoles> userOrganizationRoles = userOrganizationRolesRepository.findByOrganization(organization);
+    	OrganizationDTO organizationDTO = new OrganizationDTO();
+    	organizationDTO.setOrganizationDetails(organization);
+    	organizationDTO.setUserOrganizationRoles(userOrganizationRoles);
+    	return organizationDTO;
     }
 
     @Override

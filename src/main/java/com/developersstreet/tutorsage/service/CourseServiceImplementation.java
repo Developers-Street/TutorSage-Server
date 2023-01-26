@@ -44,7 +44,9 @@ public class CourseServiceImplementation implements CourseService {
     public Course createCourse(Course c, User user, Long organizationId) {
     	c.setCreator(user);
     	c.setHeadTutor(user);
-        Course savedCourse = courseRepository.save(c);
+    	if(organizationId != null) c.setVisibility(CourseVisibilityType.ORGANIZATION);
+    	else c.setVisibility(CourseVisibilityType.PUBLIC);
+    	Course savedCourse = courseRepository.save(c);
         if(organizationId != null) {
         	Organization o = organizationRepository.findOrganizationById(organizationId);
         	o.addCourses(savedCourse);
