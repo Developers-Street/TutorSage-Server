@@ -7,11 +7,14 @@ import com.developersstreet.tutorsage.model.Subject;
 import com.developersstreet.tutorsage.model.User;
 import com.developersstreet.tutorsage.repository.CourseRepository;
 import com.developersstreet.tutorsage.repository.OrganizationRepository;
+import com.developersstreet.tutorsage.repository.SubjectRepository;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -23,6 +26,7 @@ public class CourseServiceImplementation implements CourseService {
     private final CourseRepository courseRepository;
     private final OrganizationRepository organizationRepository;
     private final OrganizationService organizationService;
+    private final SubjectRepository subjectRepository;
 
     @Override
     public Course getCourseById(Long id) {
@@ -81,7 +85,11 @@ public class CourseServiceImplementation implements CourseService {
 		if(!organizationService.isUserPartOfOrganization(organization, user)) throw new Exception("You are not authorized to perform this task");
 		if(!organizationService.isCoursePartOfOrganization(organization, course)) throw new Exception("Course and organization mismatch");
 		if(!organizationService.isUserAdminOfOrganization(organization, user) && !isUserHeadTutor(course, user)) throw new Exception("You are not authorized to perform this task");
-		course.setSubjects(subjects);
+		Set<Subject> savedSubjects = new HashSet<>();
+		subjects.forEach((subject) -> {
+			savedSubjects.add(subjectRepository.save(subject));
+		});
+		course.setSubjects(savedSubjects);
 	}
 
 	@Override
