@@ -24,7 +24,6 @@ import java.util.Set;
 public class CourseServiceImplementation implements CourseService {
 
     private final CourseRepository courseRepository;
-    private final OrganizationRepository organizationRepository;
     private final OrganizationService organizationService;
     private final SubjectRepository subjectRepository;
 
@@ -43,18 +42,32 @@ public class CourseServiceImplementation implements CourseService {
         else courses = courses.subList(Integer.parseInt(fromIndex.toString()), Integer.parseInt(toIndex.toString()));
         return courses;
     }
+    
+    @Override
+    public Set<Course> getCoursesByOrganizationId(Long organizationId, String query, Long offset, Long limit) {
+    	Organization organization = organizationService.getOrganizationById(organizationId);
+    	Set<Course> courses = organization.getCourses();
+    	return courses;
+    }
 
     @Override
-    public Course createCourse(Course c, User user, Long organizationId) {
-    	c.setCreator(user);
-    	c.setHeadTutor(user);
-    	if(organizationId != null) c.setVisibility(CourseVisibilityType.ORGANIZATION);
-    	else c.setVisibility(CourseVisibilityType.PUBLIC);
-    	Course savedCourse = courseRepository.save(c);
-        if(organizationId != null) {
-        	Organization o = organizationRepository.findOrganizationById(organizationId);
-        	o.addCourses(savedCourse);
-        	organizationRepository.save(o);
+    public Course createCourse(Course course, User user, Long organizationId) throws Exception {
+    	Organization organization = null;
+    	if(organizationId != null) {
+    		organization = organizationService.getOrganizationById(organizationId);
+    		if(!organizationService.isUserAdminOfOrganization(organization, user)) {
+    			throw new Exception("You are not authorized to perform this task");
+    		}
+    		course.setVisibility(CourseVisibilityType.ORGANIZATION);
+    	}
+    	else {
+    		course.setVisibility(CourseVisibilityType.PUBLIC);
+    	}
+    	course.setCreator(user);
+    	course.setHeadTutor(user);
+    	Course savedCourse = courseRepository.save(course);
+        if(organization != null) {
+        	organization.addCourse(savedCourse);
         }
         return savedCourse;
     }
@@ -69,7 +82,7 @@ public class CourseServiceImplementation implements CourseService {
 
 	@Override
 	public void joinCourseAsStudent(Long organizationId, Long courseId, User user) throws Exception {
-		Organization o = organizationRepository.findOrganizationById(organizationId);
+		Organization o = organizationService.getOrganizationById(organizationId);
 		if(o == null) {
 			throw new Exception("Organization does not exist");
 		}

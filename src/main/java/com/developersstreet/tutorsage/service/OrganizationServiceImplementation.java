@@ -1,12 +1,13 @@
 package com.developersstreet.tutorsage.service;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
 
 import com.developersstreet.tutorsage.dto.OrganizationDTO;
 import com.developersstreet.tutorsage.model.Course;
@@ -26,6 +27,7 @@ public class OrganizationServiceImplementation implements OrganizationService {
     
     private final OrganizationRepository organizationRepository;
     private final UserOrganizationRolesRepository userOrganizationRolesRepository;
+    private final UserService userService;
 
     @Override
     public Organization getOrganizationById(Long id) {
@@ -45,24 +47,21 @@ public class OrganizationServiceImplementation implements OrganizationService {
 
     @Override
     public List<Organization> getOrganizationsByQueryAndOffsetAndLimit(String query, Long offset, Long limit) throws Exception {
-        List<Organization> organizations = organizationRepository.findOrganizationsByNameContains(query);
+        Set<Organization> organizations = organizationRepository.findOrganizationsByNameContains(query);
         if(organizations.size() == 0) throw new Exception("No Organizations found");
         Long fromIndex = limit * (offset - 1);
         Long toIndex = limit * (offset - 1) + limit;
-        if(organizations.size() < toIndex) organizations = organizations.subList(Integer.parseInt(fromIndex.toString()), organizations.size());
-        else organizations = organizations.subList(Integer.parseInt(fromIndex.toString()), Integer.parseInt(toIndex.toString()));
-        return organizations;
-    }
-    
-    @Override
-    public Set<Course> getCoursesByOrganizationId(Long organizationId, String query, Long offset, Long limit) {
-    	Organization o = organizationRepository.findOrganizationById(organizationId);
-    	Set<Course> courses = o.getCourses();
-    	return courses;
+        List<Organization> organizationsList = new ArrayList<>(organizations);
+        if(organizations.size() < toIndex) organizationsList = organizationsList.subList(Integer.parseInt(fromIndex.toString()), organizationsList.size());
+        else organizationsList = organizationsList.subList(Integer.parseInt(fromIndex.toString()), Integer.parseInt(toIndex.toString()));
+        return organizationsList;
     }
 
     @Override
-    public Organization createOrganization(Organization o) {
+    public Organization createOrganization(Organization o, User user) throws Exception {
+    	if(userService.isStudent(user.getId())) throw new Exception("Student cannot create organizations");
+    	o.setCreator(user);
+        o.setAdmin(user);
         return organizationRepository.save(o);
     }
 
@@ -82,15 +81,16 @@ public class OrganizationServiceImplementation implements OrganizationService {
 
 	@Override
 	public Set<Organization> getMyOrganization(User user) {
-		List<Organization> organizations = organizationRepository.findOrganizationsByAdmin(user);
-		Set<Organization> myOrganizations = organizationRepository.findMyOrganization(user);
-		myOrganizations.addAll(organizations);
-		return myOrganizations;
-	}
-
-	@Override
-	public List<Organization> getMyOrganizationAsStudent(User user) {
-		List<Organization> organizations = organizationRepository.findOrganizationsByStudentsContains(user);
+		boolean isStudent = userService.isStudent(user.getId());
+		Set<Organization> organizations = new HashSet<>();
+		if(isStudent) {
+			organizations = organizationRepository.findOrganizationsByStudentsContains(user);
+		}
+		else {
+			organizations = organizationRepository.findOrganizationsByAdmin(user);
+			Set<Organization> myOrganizations = organizationRepository.findMyOrganization(user);
+			organizations.addAll(myOrganizations);	
+		}
 		return organizations;
 	}
 

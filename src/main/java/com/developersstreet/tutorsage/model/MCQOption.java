@@ -4,35 +4,27 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import static javax.persistence.FetchType.EAGER;
 import static javax.persistence.GenerationType.AUTO;
-
-import java.util.Set;
+import static javax.persistence.FetchType.EAGER;
 
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Subject extends AuditModel {
+public class MCQOption {
 	@Id
 	@GeneratedValue(strategy = AUTO)
 	private Long id;
 	
-	private String name;
-	
 	@ManyToOne(fetch = EAGER)
-	private User tutor;
+	private MCQ question;
 	
-	@OneToMany(fetch = EAGER)
-	private Set<Lecture> lectures;
+	private String value;
 	
-	public void addLecture(Lecture lecture) {
-		this.lectures.add(lecture);
-	}
+	private boolean correct;
 }

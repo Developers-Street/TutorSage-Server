@@ -69,7 +69,7 @@ public class Organization extends AuditModel {
     	students.add(user);
     }
     
-    public void addCourses(Course course) {
+    public void addCourse(Course course) {
     	courses.add(course);
     }
     

@@ -10,29 +10,27 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import static javax.persistence.FetchType.EAGER;
 import static javax.persistence.GenerationType.AUTO;
 
 import java.util.Set;
+
+import static javax.persistence.FetchType.EAGER;
 
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Subject extends AuditModel {
+public class MCQ extends AuditModel {
 	@Id
 	@GeneratedValue(strategy = AUTO)
 	private Long id;
 	
-	private String name;
-	
 	@ManyToOne(fetch = EAGER)
-	private User tutor;
+	private User author;
 	
-	@OneToMany(fetch = EAGER)
-	private Set<Lecture> lectures;
+	private String statement;
 	
-	public void addLecture(Lecture lecture) {
-		this.lectures.add(lecture);
-	}
+	private Integer marks;
+	
+	private Integer negativeMarks;
 }

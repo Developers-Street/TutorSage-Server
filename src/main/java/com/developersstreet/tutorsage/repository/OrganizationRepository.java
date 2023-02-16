@@ -11,9 +11,9 @@ import com.developersstreet.tutorsage.model.User;
 
 public interface OrganizationRepository extends JpaRepository<Organization, Long> {
     Organization findOrganizationById(Long Id);
-    List<Organization> findOrganizationsByNameContains(String query);
-    List<Organization> findOrganizationsByAdmin(User admin);
-    List<Organization> findOrganizationsByStudentsContains(User student);
+    Set<Organization> findOrganizationsByNameContains(String query);
+    Set<Organization> findOrganizationsByAdmin(User admin);
+    Set<Organization> findOrganizationsByStudentsContains(User student);
     
     @Query("SELECT distinct o FROM Organization o, User u, UserOrganizationRoles uor where uor.user = u.id and uor.user = ?1 and o.id = uor.organization")
     Set<Organization> findMyOrganization(User user);

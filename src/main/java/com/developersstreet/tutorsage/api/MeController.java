@@ -1,7 +1,9 @@
 package com.developersstreet.tutorsage.api;
 
+import com.developersstreet.tutorsage.model.Organization;
 import com.developersstreet.tutorsage.model.User;
 import com.developersstreet.tutorsage.model.UserData;
+import com.developersstreet.tutorsage.service.OrganizationService;
 import com.developersstreet.tutorsage.service.UserService;
 import com.developersstreet.tutorsage.service.UtilityService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -13,6 +15,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
+import java.util.List;
+import java.util.Set;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
@@ -22,6 +26,7 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 public class MeController {
 
     private final UserService userService;
+    private final OrganizationService organizationService;
     private final UtilityService utilityService;
 
     @PostMapping("/data/save")
@@ -33,6 +38,18 @@ public class MeController {
         } catch (Exception exception) {
             utilityService.setExceptionResponse(exception, response);
         }
+    }
+    
+    @GetMapping("/organizations")
+    public void getMyOrganizations(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    	String authorizationHeader = request.getHeader(AUTHORIZATION);
+    	try {
+    		User user = utilityService.getUserByAuthorizationHeader(authorizationHeader);
+    		Set<Organization> organizations = organizationService.getMyOrganization(user);
+    		new ObjectMapper().writeValue(response.getOutputStream(), organizations);
+    	} catch(Exception exception) {
+    		utilityService.setExceptionResponse(exception, response);
+    	}
     }
 
     @GetMapping("/")

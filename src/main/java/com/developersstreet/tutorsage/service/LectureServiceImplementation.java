@@ -8,20 +8,22 @@ import com.developersstreet.tutorsage.model.Lecture;
 import com.developersstreet.tutorsage.model.Subject;
 import com.developersstreet.tutorsage.model.User;
 import com.developersstreet.tutorsage.repository.LectureRepository;
-import com.developersstreet.tutorsage.repository.SubjectRepository;
 
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class SubjectServiceImplementation implements SubjectService {
+public class LectureServiceImplementation implements LectureService {
 	
 	private final LectureRepository lectureRepository;
-	private final SubjectRepository subjectRepository;
+	private final SubjectService subjectService;
 	
 	@Override
-	public Subject getSubjectById(Long id) {
-		return subjectRepository.findSubjectById(id);
+	public Lecture addLectureToSubject(Lecture lecture, Long organizationId, Long courseId, Long subjectId, User user) {
+		Lecture savedLecture = lectureRepository.save(lecture);
+		Subject subject = subjectService.getSubjectById(subjectId);
+		subject.addLecture(savedLecture);
+		return savedLecture;
 	}
 }

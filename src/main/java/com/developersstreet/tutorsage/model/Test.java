@@ -4,17 +4,20 @@ import javax.persistence.Entity;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
-import com.developersstreet.tutorsage.enums.LectureMode;
+import com.developersstreet.tutorsage.enums.TestStatus;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import static javax.persistence.FetchType.EAGER;
 import static javax.persistence.EnumType.STRING;
 import static javax.persistence.GenerationType.AUTO;
 
 import java.util.Date;
+import java.util.Set;
 
 import javax.persistence.Column;
 
@@ -22,19 +25,23 @@ import javax.persistence.Column;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Lecture extends AuditModel {
+public class Test extends AuditModel {
 	@Id
 	@GeneratedValue(strategy = AUTO)
 	private Long id;
 	
-	@Column(columnDefinition = "ENUM('online', 'offline')")
+	private String name;
+	
+	@Column(columnDefinition = "ENUM('live', 'onhold', 'expired')")
 	@Enumerated(STRING)
-	private LectureMode mode;
+	private TestStatus status;
 	
-	private String onlineUrl;
+	private Date startTime;
 	
-	private Date date;
+	private Date endTime;
 	
-	private Integer duration;
-
+	private Long duration;
+	
+	@OneToMany(fetch = EAGER)
+	private Set<TestSection> sections;
 }

@@ -17,14 +17,17 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.developersstreet.tutorsage.dto.OrganizationDTO;
 import com.developersstreet.tutorsage.model.Course;
+import com.developersstreet.tutorsage.model.Lecture;
 import com.developersstreet.tutorsage.model.Organization;
 import com.developersstreet.tutorsage.model.Role;
 import com.developersstreet.tutorsage.model.Subject;
+import com.developersstreet.tutorsage.model.Test;
 import com.developersstreet.tutorsage.model.User;
-import com.developersstreet.tutorsage.model.subject.Lecture;
 import com.developersstreet.tutorsage.service.CourseService;
+import com.developersstreet.tutorsage.service.LectureService;
 import com.developersstreet.tutorsage.service.OrganizationService;
 import com.developersstreet.tutorsage.service.SubjectService;
+import com.developersstreet.tutorsage.service.TestService;
 import com.developersstreet.tutorsage.service.UserService;
 import com.developersstreet.tutorsage.service.UtilityService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -45,6 +48,8 @@ public class OrganizationController {
     private final UserService userService;
     private final CourseService courseService;
     private final SubjectService subjectService;
+    private final LectureService lectureService;
+    private final TestService testService;
     
     @GetMapping("/")
     public void getOrganizations(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -59,12 +64,23 @@ public class OrganizationController {
         }
     }
     
-    @PostMapping("/{id}/course/create")
-    public void createCourse(@PathVariable Long id, @RequestBody Course c, HttpServletRequest request, HttpServletResponse response) throws IOException {
+    @PostMapping("/create")
+    public void createOrganization(@RequestBody Organization o, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String authorizationHeader = request.getHeader(AUTHORIZATION);
+        try {
+            User user = utilityService.getUserByAuthorizationHeader(authorizationHeader);
+            organizationService.createOrganization(o, user);
+        } catch(Exception exception) {
+            utilityService.setExceptionResponse(exception, response);
+        }
+    }
+    
+    @PostMapping("/{organizationId}/course/create")
+    public void createCourse(@PathVariable Long organizationId, @RequestBody Course c, HttpServletRequest request, HttpServletResponse response) throws IOException {
     	String authorizationHeader = request.getHeader(AUTHORIZATION);
     	try {
     		User user = utilityService.getUserByAuthorizationHeader(authorizationHeader);
-    		Course savedCourse = courseService.createCourse(c, user, id);
+    		Course savedCourse = courseService.createCourse(c, user, organizationId);
     		new ObjectMapper().writeValue(response.getOutputStream(), savedCourse);
     	} catch(Exception exception) {
     		utilityService.setExceptionResponse(exception, response);
@@ -89,52 +105,34 @@ public class OrganizationController {
     		String query = request.getParameter("query");
     		Long offset = Long.parseLong(request.getParameter("offset"));
     		Long limit  = Long.parseLong(request.getParameter("limit"));
-    		Set<Course> courses = organizationService.getCoursesByOrganizationId(id, query, offset, limit);
+    		Set<Course> courses = courseService.getCoursesByOrganizationId(id, query, offset, limit);
     		new ObjectMapper().writeValue(response.getOutputStream(), courses);
     	} catch(Exception exception) {
     		utilityService.setExceptionResponse(exception, response);
     	}
     }
     
-    @PostMapping("/{organizationId}/course/{courseId}/join")
-    public void joinCourseAsStudent(@PathVariable Long organizationId, @PathVariable Long courseId, HttpServletRequest request, HttpServletResponse response) throws IOException {
+    @PostMapping("/{organizationId}/course/{courseId}/subject/{subjectId}/lecture/add")
+    public void addLectureToSubject(@PathVariable Long organizationId, @PathVariable Long courseId, @PathVariable Long subjectId, @RequestBody Lecture lecture, HttpServletRequest request, HttpServletResponse response) throws IOException {
     	String authorizationHeader = request.getHeader(AUTHORIZATION);
     	try {
     		User user = utilityService.getUserByAuthorizationHeader(authorizationHeader);
-    		courseService.joinCourseAsStudent(organizationId, courseId, user);
-    	} catch (Exception exception) {
-    		utilityService.setExceptionResponse(exception, response);
-    	}
-    }
-    
-    @PostMapping("/{organizationId}/course/{courseId}/subject/{subjectId}")
-    public void addLectureToSubject(@PathVariable Long subjectId, @RequestBody Lecture lecture, HttpServletRequest request, HttpServletResponse response) throws IOException {
-    	String authorizationHeader = request.getHeader(AUTHORIZATION);
-    	try {
-    		User user = utilityService.getUserByAuthorizationHeader(authorizationHeader);
-    		subjectService.addLectureToSubject(lecture, subjectId, user);
+    		lectureService.addLectureToSubject(lecture, organizationId, courseId, subjectId, user);
     	} catch (Exception exception) {
     		utilityService.setExceptionResponse(exception, response);
 		}
     }
     
-    @GetMapping("/me")
-    public void getMyOrganizations(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    @PostMapping("/{organizationId}/course/{courseId}/subject/{subjectId}/test/create")
+    public void createTestInSubject(@PathVariable Long subjectId, HttpServletRequest request, HttpServletResponse response) throws IOException {
     	String authorizationHeader = request.getHeader(AUTHORIZATION);
     	try {
     		User user = utilityService.getUserByAuthorizationHeader(authorizationHeader);
-    		boolean isStudent = userService.isStudent(user.getId());
-    		if(isStudent) {
-    			List<Organization> organizations = organizationService.getMyOrganizationAsStudent(user);
-    			new ObjectMapper().writeValue(response.getOutputStream(), organizations);
-    		}
-    		else {
-    			Set<Organization> organizations = organizationService.getMyOrganization(user);
-    			new ObjectMapper().writeValue(response.getOutputStream(), organizations);
-    		}
-    	} catch(Exception exception) {
+    		Test newTest = testService.createTest();
+    		new ObjectMapper().writeValue(response.getOutputStream(), newTest);
+    	} catch (Exception exception) {
     		utilityService.setExceptionResponse(exception, response);
-    	}
+		}
     }
 
     @GetMapping("/{id}")
@@ -142,19 +140,6 @@ public class OrganizationController {
         try {
         	OrganizationDTO organizationDTO = organizationService.getOrganizationDetails(id);
             new ObjectMapper().writeValue(response.getOutputStream(), organizationDTO);
-        } catch(Exception exception) {
-            utilityService.setExceptionResponse(exception, response);
-        }
-    }
-
-    @PostMapping("/create")
-    public void createOrganization(@RequestBody Organization o, HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String authorizationHeader = request.getHeader(AUTHORIZATION);
-        try {
-            User user = utilityService.getUserByAuthorizationHeader(authorizationHeader);
-            o.setCreator(user);
-            o.setAdmin(user);
-            organizationService.createOrganization(o);
         } catch(Exception exception) {
             utilityService.setExceptionResponse(exception, response);
         }
@@ -179,6 +164,17 @@ public class OrganizationController {
     		User user = utilityService.getUserByAuthorizationHeader(authorizationHeader);
     		organizationService.joinOrganizationAsStudent(organizationId, user);
     	} catch(Exception exception) {
+    		utilityService.setExceptionResponse(exception, response);
+    	}
+    }
+    
+    @PostMapping("/{organizationId}/course/{courseId}/join")
+    public void joinCourseAsStudent(@PathVariable Long organizationId, @PathVariable Long courseId, HttpServletRequest request, HttpServletResponse response) throws IOException {
+    	String authorizationHeader = request.getHeader(AUTHORIZATION);
+    	try {
+    		User user = utilityService.getUserByAuthorizationHeader(authorizationHeader);
+    		courseService.joinCourseAsStudent(organizationId, courseId, user);
+    	} catch (Exception exception) {
     		utilityService.setExceptionResponse(exception, response);
     	}
     }
