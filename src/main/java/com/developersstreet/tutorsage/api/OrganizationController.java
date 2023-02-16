@@ -21,8 +21,10 @@ import com.developersstreet.tutorsage.model.Organization;
 import com.developersstreet.tutorsage.model.Role;
 import com.developersstreet.tutorsage.model.Subject;
 import com.developersstreet.tutorsage.model.User;
+import com.developersstreet.tutorsage.model.subject.Lecture;
 import com.developersstreet.tutorsage.service.CourseService;
 import com.developersstreet.tutorsage.service.OrganizationService;
+import com.developersstreet.tutorsage.service.SubjectService;
 import com.developersstreet.tutorsage.service.UserService;
 import com.developersstreet.tutorsage.service.UtilityService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -42,7 +44,8 @@ public class OrganizationController {
     private final UtilityService utilityService;
     private final UserService userService;
     private final CourseService courseService;
-
+    private final SubjectService subjectService;
+    
     @GetMapping("/")
     public void getOrganizations(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
@@ -102,6 +105,17 @@ public class OrganizationController {
     	} catch (Exception exception) {
     		utilityService.setExceptionResponse(exception, response);
     	}
+    }
+    
+    @PostMapping("/{organizationId}/course/{courseId}/subject/{subjectId}")
+    public void addLectureToSubject(@PathVariable Long subjectId, @RequestBody Lecture lecture, HttpServletRequest request, HttpServletResponse response) throws IOException {
+    	String authorizationHeader = request.getHeader(AUTHORIZATION);
+    	try {
+    		User user = utilityService.getUserByAuthorizationHeader(authorizationHeader);
+    		subjectService.addLectureToSubject(lecture, subjectId, user);
+    	} catch (Exception exception) {
+    		utilityService.setExceptionResponse(exception, response);
+		}
     }
     
     @GetMapping("/me")
