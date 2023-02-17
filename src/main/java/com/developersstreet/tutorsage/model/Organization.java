@@ -4,7 +4,6 @@ import javax.persistence.Entity;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import static javax.persistence.EnumType.STRING;
-import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.FetchType.EAGER;
 import static javax.persistence.GenerationType.AUTO;
 

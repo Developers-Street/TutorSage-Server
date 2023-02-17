@@ -7,7 +7,6 @@ import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -24,8 +23,6 @@ import static org.springframework.http.HttpMethod.POST;
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.PUT;
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
-
-import java.util.Arrays;
 
 @Configuration @EnableWebSecurity @RequiredArgsConstructor @Slf4j
 public class SecurityConfig extends WebSecurityConfigurerAdapter {

@@ -26,7 +26,6 @@ import com.developersstreet.tutorsage.model.User;
 import com.developersstreet.tutorsage.service.CourseService;
 import com.developersstreet.tutorsage.service.LectureService;
 import com.developersstreet.tutorsage.service.OrganizationService;
-import com.developersstreet.tutorsage.service.SubjectService;
 import com.developersstreet.tutorsage.service.TestService;
 import com.developersstreet.tutorsage.service.UserService;
 import com.developersstreet.tutorsage.service.UtilityService;

@@ -1,6 +1,5 @@
 package com.developersstreet.tutorsage.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -67,7 +66,4 @@ public class UserData extends AuditModel {
     @Pattern(regexp = "^[6-9][0-9]{9}$", message = "Phone Number is invalid")
     private String phoneNumber;
 
-//    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-//    @Column(nullable = false, unique = true)
-//    private Long userId;
 }

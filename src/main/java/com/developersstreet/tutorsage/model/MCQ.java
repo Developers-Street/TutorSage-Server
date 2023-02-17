@@ -4,15 +4,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import static javax.persistence.GenerationType.AUTO;
-
-import java.util.Set;
 
 import static javax.persistence.FetchType.EAGER;
 

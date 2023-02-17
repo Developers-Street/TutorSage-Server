@@ -6,8 +6,6 @@ import com.developersstreet.tutorsage.model.Organization;
 import com.developersstreet.tutorsage.model.Subject;
 import com.developersstreet.tutorsage.model.User;
 import com.developersstreet.tutorsage.repository.CourseRepository;
-import com.developersstreet.tutorsage.repository.OrganizationRepository;
-import com.developersstreet.tutorsage.repository.SubjectRepository;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
