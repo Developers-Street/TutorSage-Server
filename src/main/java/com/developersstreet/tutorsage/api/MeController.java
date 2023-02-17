@@ -63,7 +63,7 @@ public class MeController {
         }
     }
     
-    @PostMapping("/profile/update")
+    @PutMapping("/profile/update")
     public void updateUserProfile(@Valid @RequestBody UserData userData, HttpServletRequest request, HttpServletResponse response) throws IOException {
     	String authorizationHeader = request.getHeader(AUTHORIZATION);
     	try {

@@ -115,8 +115,8 @@ public class UserServiceImplementation implements UserService, UserDetailsServic
 	}
 
 	@Override
-	public boolean isStudent(Long id) {
-		Set<Role> roles = userRepository.getById(id).getRoles();
+	public boolean isStudent(User user) {
+		Set<Role> roles = user.getRoles();
 		return roles.stream().anyMatch(r -> "ROLE_STUDENT".equals(r.getName()));
 	}
 }

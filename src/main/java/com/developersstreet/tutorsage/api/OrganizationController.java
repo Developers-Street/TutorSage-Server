@@ -97,13 +97,13 @@ public class OrganizationController {
     	}
     }
     
-    @GetMapping("/{id}/courses")
-    public void getCourses(@PathVariable Long id, HttpServletRequest request, HttpServletResponse response) throws IOException {
+    @GetMapping("/{organizationId}/courses")
+    public void getCourses(@PathVariable Long organizationId, HttpServletRequest request, HttpServletResponse response) throws IOException {
     	try {
     		String query = request.getParameter("query");
     		Long offset = Long.parseLong(request.getParameter("offset"));
     		Long limit  = Long.parseLong(request.getParameter("limit"));
-    		Set<Course> courses = courseService.getCoursesByOrganizationId(id, query, offset, limit);
+    		Set<Course> courses = courseService.getCoursesByOrganizationId(organizationId, query, offset, limit);
     		new ObjectMapper().writeValue(response.getOutputStream(), courses);
     	} catch(Exception exception) {
     		utilityService.setExceptionResponse(exception, response);
@@ -143,31 +143,18 @@ public class OrganizationController {
         }
     }
     
-    
-    //TO CHECK AND REFACTOR
-    @PostMapping("/join")
-    public void joinOrganization(@RequestParam Long organizationId, @RequestParam Long roleId, HttpServletRequest request, HttpServletResponse response) throws IOException {
+    @PostMapping("/{organizationId}/join")
+    public void joinOrganization(@PathVariable Long organizationId, @RequestParam Long roleId, HttpServletRequest request, HttpServletResponse response) throws IOException {
     	String authorizationHeader = request.getHeader(AUTHORIZATION);
     	try {
     		User user = utilityService.getUserByAuthorizationHeader(authorizationHeader);
-    		Role role = userService.getRoleById(roleId);
-    		organizationService.joinOrganization(organizationId, user, role);
+    		organizationService.joinOrganization(organizationId, user, roleId);
     	} catch(Exception exception) {
     		utilityService.setExceptionResponse(exception, response);
     	}
     }
     
-    @PostMapping("/student/join")
-    public void joinOrganizationAsStudent(@RequestParam Long organizationId, HttpServletRequest request, HttpServletResponse response) throws IOException {
-    	String authorizationHeader = request.getHeader(AUTHORIZATION);
-    	try {
-    		User user = utilityService.getUserByAuthorizationHeader(authorizationHeader);
-    		organizationService.joinOrganizationAsStudent(organizationId, user);
-    	} catch(Exception exception) {
-    		utilityService.setExceptionResponse(exception, response);
-    	}
-    }
-    
+    //TO CHECK
     @PostMapping("/{organizationId}/course/{courseId}/join")
     public void joinCourseAsStudent(@PathVariable Long organizationId, @PathVariable Long courseId, HttpServletRequest request, HttpServletResponse response) throws IOException {
     	String authorizationHeader = request.getHeader(AUTHORIZATION);

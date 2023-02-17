@@ -8,6 +8,8 @@ import com.developersstreet.tutorsage.model.User;
 import com.developersstreet.tutorsage.repository.CourseRepository;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -19,6 +21,7 @@ import java.util.Set;
 @Service
 @RequiredArgsConstructor
 @Transactional
+@Slf4j
 public class CourseServiceImplementation implements CourseService {
 
     private final CourseRepository courseRepository;

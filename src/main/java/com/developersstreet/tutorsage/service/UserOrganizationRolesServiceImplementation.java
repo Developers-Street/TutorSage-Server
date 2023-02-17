@@ -24,7 +24,10 @@ public class UserOrganizationRolesServiceImplementation implements UserOrganizat
 	private final UserOrganizationRolesRepository userOrganizationRolesRepository;
 
 	@Override
-	public UserOrganizationRoles createUserOrganizationRoles(Organization organization, Role role, User user) {
+	public UserOrganizationRoles createUserOrganizationRoles(Organization organization, Role role, User user) throws Exception {
+		if(userOrganizationRolesRepository.findByUserAndOrganizationAndRole(user, organization, role).size() > 0) {
+			throw new Exception("User already have this role in the organization");
+		}
 		UserOrganizationRoles userOrganizationRoles = new UserOrganizationRoles(organization, role, user);
 		return userOrganizationRolesRepository.save(userOrganizationRoles);
 	}

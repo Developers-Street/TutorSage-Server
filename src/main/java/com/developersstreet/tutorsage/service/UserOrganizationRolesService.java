@@ -8,7 +8,7 @@ import com.developersstreet.tutorsage.model.User;
 import com.developersstreet.tutorsage.model.UserOrganizationRoles;
 
 public interface UserOrganizationRolesService {
-	UserOrganizationRoles createUserOrganizationRoles(Organization organization, Role role, User user);
+	UserOrganizationRoles createUserOrganizationRoles(Organization organization, Role role, User user) throws Exception;
 	List<UserOrganizationRoles> getUserOrganizationRolesByOrganization(Organization organization);
 	boolean isUserPartOfOrganization(Organization organization, User user);
 }

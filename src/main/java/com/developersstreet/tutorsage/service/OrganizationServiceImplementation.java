@@ -59,28 +59,36 @@ public class OrganizationServiceImplementation implements OrganizationService {
 
     @Override
     public Organization createOrganization(Organization o, User user) throws Exception {
-    	if(userService.isStudent(user.getId())) throw new Exception("Student cannot create organizations");
+    	if(userService.isStudent(user)) throw new Exception("Student cannot create organizations");
     	o.setCreator(user);
         o.setAdmin(user);
         return organizationRepository.save(o);
     }
 
 	@Override
-	public void joinOrganizationAsStudent(Long id, User user) {
+	public void joinOrganization(Long id, User user, Long roleId) throws Exception {
+		Role role = userService.getRoleById(roleId);
 		Organization o = organizationRepository.findOrganizationById(id);
-		o.addStudent(user);
-		organizationRepository.save(o);
-	}
-
-	@Override
-	public void joinOrganization(Long id, User user, Role role) {
-		Organization o = organizationRepository.findOrganizationById(id);
-		userOrganizationRolesService.createUserOrganizationRoles(o, role, user);
+		if(role.getName().equals("ROLE_STUDENT")) {
+			if(!userService.isStudent(user)) {
+				throw new Exception("User is not a student. Cannot join as student");
+			}
+			o.addStudent(user);
+			organizationRepository.save(o);
+		} else {
+			if(userService.isStudent(user)) {
+				throw new Exception("Student cannot join organization with different role");
+			}
+			if(o.getAdmin().equals(user)) {
+				throw new Exception("User is admin of the organization. Cannot join");
+			}
+			userOrganizationRolesService.createUserOrganizationRoles(o, role, user);
+		}
 	}
 
 	@Override
 	public Set<Organization> getMyOrganization(User user) {
-		boolean isStudent = userService.isStudent(user.getId());
+		boolean isStudent = userService.isStudent(user);
 		Set<Organization> organizations = new HashSet<>();
 		if(isStudent) {
 			organizations = organizationRepository.findOrganizationsByStudentsContains(user);
