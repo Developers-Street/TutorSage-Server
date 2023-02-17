@@ -135,8 +135,10 @@ public class OrganizationController {
 
     @GetMapping("/{id}")
     public void getOneOrganization(@PathVariable Long id, HttpServletRequest request, HttpServletResponse response) throws IOException {
-        try {
-        	OrganizationDTO organizationDTO = organizationService.getOrganizationDetails(id);
+        String authorizationHeader = request.getHeader(AUTHORIZATION);
+    	try {
+    		User user = utilityService.getUserByAuthorizationHeader(authorizationHeader);
+        	OrganizationDTO organizationDTO = organizationService.getOrganizationDetails(id, user);
             new ObjectMapper().writeValue(response.getOutputStream(), organizationDTO);
         } catch(Exception exception) {
             utilityService.setExceptionResponse(exception, response);

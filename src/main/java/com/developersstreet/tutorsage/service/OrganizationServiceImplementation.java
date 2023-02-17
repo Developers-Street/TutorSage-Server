@@ -35,13 +35,14 @@ public class OrganizationServiceImplementation implements OrganizationService {
     }
     
     @Override
-    public OrganizationDTO getOrganizationDetails(Long id) throws Exception {
+    public OrganizationDTO getOrganizationDetails(Long id, User user) throws Exception {
     	Organization organization = getOrganizationById(id);
     	if(organization == null) throw new Exception("Organization not found!!");
     	List<UserOrganizationRoles> userOrganizationRoles = userOrganizationRolesService.getUserOrganizationRolesByOrganization(organization);
     	OrganizationDTO organizationDTO = new OrganizationDTO();
     	organizationDTO.setOrganizationDetails(organization);
     	organizationDTO.setUserOrganizationRoles(userOrganizationRoles);
+    	if(isUserPartOfOrganization(organization, user)) organizationDTO.setJoinEnable(false);
     	return organizationDTO;
     }
 
@@ -109,5 +110,14 @@ public class OrganizationServiceImplementation implements OrganizationService {
 	@Override
 	public boolean isCoursePartOfOrganization(Organization organization, Course course) {
 		return organization.checkIfCourse(course);
+	}
+
+	@Override
+	public boolean isUserPartOfOrganization(Organization organization, User user) {
+		if(userOrganizationRolesService.isUserPartOfOrganization(organization, user)) {
+			return true;
+		}
+		if(organization.checkIfStudent(user)) return true;
+		return false;
 	}
 }
