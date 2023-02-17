@@ -4,6 +4,7 @@ import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
 
+import com.developersstreet.tutorsage.model.Course;
 import com.developersstreet.tutorsage.model.Lecture;
 import com.developersstreet.tutorsage.model.Subject;
 import com.developersstreet.tutorsage.model.User;
@@ -17,12 +18,18 @@ import lombok.RequiredArgsConstructor;
 public class LectureServiceImplementation implements LectureService {
 	
 	private final LectureRepository lectureRepository;
+	
 	private final SubjectService subjectService;
+	private final CourseService courseService;
 	
 	@Override
-	public Lecture addLectureToSubject(Lecture lecture, Long organizationId, Long courseId, Long subjectId, User user) {
-		Lecture savedLecture = lectureRepository.save(lecture);
+	public Lecture addLectureToSubject(Lecture lecture, Long courseId, Long subjectId, User user) throws Exception  {
+		Course course = courseService.getCourseById(courseId);
 		Subject subject = subjectService.getSubjectById(subjectId);
+		if(!courseService.isUserHeadTutor(course, user) && !subjectService.isUserSubjectTutor(subject, user)) {
+			throw new Exception("You are not authorized to perform this task");
+		}
+		Lecture savedLecture = lectureRepository.save(lecture);
 		subject.addLecture(savedLecture);
 		return savedLecture;
 	}

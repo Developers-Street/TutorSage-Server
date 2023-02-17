@@ -26,8 +26,9 @@ import lombok.RequiredArgsConstructor;
 public class OrganizationServiceImplementation implements OrganizationService {
     
     private final OrganizationRepository organizationRepository;
-    private final UserOrganizationRolesRepository userOrganizationRolesRepository;
+    
     private final UserService userService;
+    private final UserOrganizationRolesService userOrganizationRolesService;
 
     @Override
     public Organization getOrganizationById(Long id) {
@@ -38,7 +39,7 @@ public class OrganizationServiceImplementation implements OrganizationService {
     public OrganizationDTO getOrganizationDetails(Long id) throws Exception {
     	Organization organization = getOrganizationById(id);
     	if(organization == null) throw new Exception("Organization not found!!");
-    	List<UserOrganizationRoles> userOrganizationRoles = userOrganizationRolesRepository.findByOrganization(organization);
+    	List<UserOrganizationRoles> userOrganizationRoles = userOrganizationRolesService.getUserOrganizationRolesByOrganization(organization);
     	OrganizationDTO organizationDTO = new OrganizationDTO();
     	organizationDTO.setOrganizationDetails(organization);
     	organizationDTO.setUserOrganizationRoles(userOrganizationRoles);
@@ -75,8 +76,7 @@ public class OrganizationServiceImplementation implements OrganizationService {
 	@Override
 	public void joinOrganization(Long id, User user, Role role) {
 		Organization o = organizationRepository.findOrganizationById(id);
-		UserOrganizationRoles userOrganizationRoles = new UserOrganizationRoles(o, role, user);
-		userOrganizationRolesRepository.save(userOrganizationRoles);
+		userOrganizationRolesService.createUserOrganizationRoles(o, role, user);
 	}
 
 	@Override
@@ -92,14 +92,6 @@ public class OrganizationServiceImplementation implements OrganizationService {
 			organizations.addAll(myOrganizations);	
 		}
 		return organizations;
-	}
-
-	@Override
-	public boolean isUserPartOfOrganization(Organization organization, User user) {
-		if(organization.getAdmin().equals(user)) return true;
-		List<UserOrganizationRoles> userOrganizationRoles = userOrganizationRolesRepository.findByUserAndOrganization(user, organization);
-		if(userOrganizationRoles.size() > 0) return true;
-		return false;
 	}
 
 	@Override

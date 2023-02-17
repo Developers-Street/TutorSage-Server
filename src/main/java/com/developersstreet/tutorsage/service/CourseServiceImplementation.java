@@ -24,8 +24,10 @@ import java.util.Set;
 public class CourseServiceImplementation implements CourseService {
 
     private final CourseRepository courseRepository;
+    
+    private final UserOrganizationRolesService userOrganizationRolesService;
     private final OrganizationService organizationService;
-    private final SubjectRepository subjectRepository;
+    private final SubjectService subjectService;
 
     @Override
     public Course getCourseById(Long id) {
@@ -95,12 +97,12 @@ public class CourseServiceImplementation implements CourseService {
 	public void addSubjectsToCourse(Long organizationId, Long courseId, User user, Set<Subject> subjects) throws Exception {
 		Organization organization = organizationService.getOrganizationById(organizationId);
 		Course course = getCourseById(courseId);
-		if(!organizationService.isUserPartOfOrganization(organization, user)) throw new Exception("You are not authorized to perform this task");
+		if(!userOrganizationRolesService.isUserPartOfOrganization(organization, user)) throw new Exception("You are not authorized to perform this task");
 		if(!organizationService.isCoursePartOfOrganization(organization, course)) throw new Exception("Course and organization mismatch");
 		if(!organizationService.isUserAdminOfOrganization(organization, user) && !isUserHeadTutor(course, user)) throw new Exception("You are not authorized to perform this task");
 		Set<Subject> savedSubjects = new HashSet<>();
 		subjects.forEach((subject) -> {
-			savedSubjects.add(subjectRepository.save(subject));
+			savedSubjects.add(subjectService.createSubject(subject));
 		});
 		course.setSubjects(savedSubjects);
 	}

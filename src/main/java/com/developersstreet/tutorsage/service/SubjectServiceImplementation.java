@@ -17,11 +17,22 @@ import lombok.RequiredArgsConstructor;
 @Transactional
 public class SubjectServiceImplementation implements SubjectService {
 	
-	private final LectureRepository lectureRepository;
 	private final SubjectRepository subjectRepository;
+
+	@Override
+	public Subject createSubject(Subject subject) {
+		return subjectRepository.save(subject);
+	}
 	
 	@Override
 	public Subject getSubjectById(Long id) {
 		return subjectRepository.findSubjectById(id);
 	}
+
+	@Override
+	public boolean isUserSubjectTutor(Subject subject, User user) {
+		if(subject.getTutor().equals(user)) return true;
+		return false;
+	}
+
 }

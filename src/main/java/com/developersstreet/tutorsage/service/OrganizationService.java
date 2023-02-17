@@ -17,7 +17,6 @@ public interface OrganizationService {
     void joinOrganization(Long id, User user, Role role);
     Set<Organization> getMyOrganization(User user);
     List<Organization> getOrganizationsByQueryAndOffsetAndLimit(String query, Long offset, Long limit) throws Exception;
-    boolean isUserPartOfOrganization(Organization organization, User user);
     boolean isUserAdminOfOrganization(Organization organization, User user);
     boolean isCoursePartOfOrganization(Organization organization, Course course);
 }

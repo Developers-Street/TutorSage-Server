@@ -47,7 +47,6 @@ public class OrganizationController {
     private final UtilityService utilityService;
     private final UserService userService;
     private final CourseService courseService;
-    private final SubjectService subjectService;
     private final LectureService lectureService;
     private final TestService testService;
     
@@ -112,12 +111,12 @@ public class OrganizationController {
     	}
     }
     
-    @PostMapping("/{organizationId}/course/{courseId}/subject/{subjectId}/lecture/add")
-    public void addLectureToSubject(@PathVariable Long organizationId, @PathVariable Long courseId, @PathVariable Long subjectId, @RequestBody Lecture lecture, HttpServletRequest request, HttpServletResponse response) throws IOException {
+    @PostMapping("/{organizationId}/course/{courseId}/subject/{subjectId}/lecture/create")
+    public void addLectureToSubject(@PathVariable Long courseId, @PathVariable Long subjectId, @RequestBody Lecture lecture, HttpServletRequest request, HttpServletResponse response) throws IOException {
     	String authorizationHeader = request.getHeader(AUTHORIZATION);
     	try {
     		User user = utilityService.getUserByAuthorizationHeader(authorizationHeader);
-    		lectureService.addLectureToSubject(lecture, organizationId, courseId, subjectId, user);
+    		lectureService.addLectureToSubject(lecture, courseId, subjectId, user);
     	} catch (Exception exception) {
     		utilityService.setExceptionResponse(exception, response);
 		}
@@ -145,6 +144,8 @@ public class OrganizationController {
         }
     }
     
+    
+    //TO CHECK AND REFACTOR
     @PostMapping("/join")
     public void joinOrganization(@RequestParam Long organizationId, @RequestParam Long roleId, HttpServletRequest request, HttpServletResponse response) throws IOException {
     	String authorizationHeader = request.getHeader(AUTHORIZATION);
