@@ -166,6 +166,16 @@ public class OrganizationController {
     	}
     }
     
+    @GetMapping("/{organizationId}/course/{courseId}/students/nonAdded")
+    public void getNonAddedStudents(@PathVariable Long organizationId, @PathVariable Long courseId, HttpServletRequest request, HttpServletResponse response) throws IOException {
+    	try {
+    		Set<UserDTO> students = courseService.getCourseNonAddedStudents(organizationId, courseId);
+    		new ObjectMapper().writeValue(response.getOutputStream(), students);
+    	} catch (Exception exception) {
+    		utilityService.setExceptionResponse(exception, response);
+		}
+    }
+    
     @PostMapping("/{organizationId}/course/{courseId}/students/add")
     public void addStudentsToCourse(@PathVariable Long organizationId, @PathVariable Long courseId, @RequestBody Set<Long> studentsId, HttpServletRequest request, HttpServletResponse response) throws IOException {
     	String authorizationHeader = request.getHeader(AUTHORIZATION);

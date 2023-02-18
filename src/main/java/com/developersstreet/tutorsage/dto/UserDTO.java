@@ -34,4 +34,13 @@ public class UserDTO {
 		this.userData.setLastName(user.getUserData().getLastName());
 		this.username = user.getUsername();
 	}
+	
+	public void setUserPrimaryDetails(User user) {
+		this.id = user.getId();
+		this.userData = new UserDataDTO();
+		this.userData.setFirstName(user.getUserData().getFirstName());
+		this.userData.setMiddleName(user.getUserData().getMiddleName());
+		this.userData.setLastName(user.getUserData().getLastName());
+		this.username = user.getUsername();
+	}
 }

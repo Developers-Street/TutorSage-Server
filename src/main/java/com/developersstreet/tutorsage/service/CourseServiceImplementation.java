@@ -1,5 +1,6 @@
 package com.developersstreet.tutorsage.service;
 
+import com.developersstreet.tutorsage.dto.UserDTO;
 import com.developersstreet.tutorsage.enums.CourseVisibilityType;
 import com.developersstreet.tutorsage.model.Course;
 import com.developersstreet.tutorsage.model.Organization;
@@ -160,5 +161,27 @@ public class CourseServiceImplementation implements CourseService {
 		}
 		
 		return studentsAdded.toString() + " out of " + totalStudents.toString() + " students have been added to the course";
+	}
+
+	@Override
+	public Set<UserDTO> getCourseNonAddedStudents(Long organizationId, Long courseId) throws Exception {
+		Set<User> students = null;
+		if(organizationId != null) {
+			Organization organization = organizationService.getOrganizationById(organizationId);
+			Course course = getCourseById(courseId);
+			if(!organization.checkIfCourse(course)) {
+				throw new Exception("Course does not belong to organization");
+			}
+			students = organization.getStudents();
+			students.removeAll(course.getStudents());
+		}
+		Set<UserDTO> studentsDTO = new HashSet<>();
+		Iterator<User> itr = students.iterator();
+		while(itr.hasNext()) {
+			UserDTO student = new UserDTO();
+			student.setUserPrimaryDetails(itr.next());
+			studentsDTO.add(student);
+		}
+		return studentsDTO;
 	}
 }
