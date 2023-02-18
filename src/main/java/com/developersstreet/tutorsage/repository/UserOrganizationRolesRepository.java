@@ -13,4 +13,5 @@ public interface UserOrganizationRolesRepository extends JpaRepository<UserOrgan
 	List<UserOrganizationRoles> findByUserAndOrganization(User user, Organization organization);
 	List<UserOrganizationRoles> findByOrganization(Organization organization);
 	List<UserOrganizationRoles> findByUserAndOrganizationAndRole(User user, Organization organization, Role role);
+	List<UserOrganizationRoles> findByOrganizationAndRole(Organization organization, Role role);
 }

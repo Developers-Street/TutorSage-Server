@@ -60,10 +60,7 @@ public class OrganizationDTO {
 		for(int i = 0; i < l; i++) {
 			UserOrganizationRolesDTO userOrganizationRolesDTO = new UserOrganizationRolesDTO();
 			UserOrganizationRoles u = uor.get(i);
-			userOrganizationRolesDTO.setUsername(u.getUser().getUsername());
-			userOrganizationRolesDTO.setProfile_pic_url(u.getUser().getUserData().getProfilePicUrl());
-			userOrganizationRolesDTO.setUserId(u.getUser().getId());
-			userOrganizationRolesDTO.setRole(u.getRole().getName());
+			userOrganizationRolesDTO.setPrimaryDetails(u.getUser(), u.getRole());
 			userOrganizationRoles.add(userOrganizationRolesDTO);
 		}
 	}

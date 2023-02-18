@@ -14,6 +14,7 @@ public interface CourseService {
     void addSubjectsToCourse(Long organizationId, Long courseId, User user, Set<Subject> subjects) throws Exception;
     List<Course> getCoursesByQueryAndOffsetAndLimit(String query, Long offset, Long limit) throws Exception;
     Set<Course> getCoursesByOrganizationId(Long organizationId, String query, Long offset, Long limit) throws Exception;
+    String addStudentsToCourse(Long organizationId, Long courseId, Set<Long> studentsId, User user) throws Exception;
     Course addMemberToCourse(Long courseId, User user) throws Exception;
     boolean isUserHeadTutor(Course course, User user);
 }

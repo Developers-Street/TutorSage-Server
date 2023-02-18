@@ -33,6 +33,17 @@ public class UtilityServiceImplementation implements UtilityService {
         new ObjectMapper().writeValue(response.getOutputStream(), error);
         return response;
     }
+    
+    @Override
+    public HttpServletResponse setMessageResponse(String message, HttpServletResponse response, Integer status) throws IOException {
+    	response.setHeader("message", message);
+    	response.setStatus(status);
+    	Map<String, String> res = new HashMap<>();
+    	res.put("message", message);
+    	response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+    	new ObjectMapper().writeValue(response.getOutputStream(), res);
+    	return response;
+    }
 
     @Override
     public User getUserByAuthorizationHeader(String authorizationHeader) throws Exception {

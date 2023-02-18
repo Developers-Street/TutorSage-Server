@@ -1,6 +1,7 @@
 package com.developersstreet.tutorsage.dto;
 
 import com.developersstreet.tutorsage.model.User;
+import com.developersstreet.tutorsage.model.UserOrganizationRoles;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import lombok.AllArgsConstructor;
@@ -22,5 +23,15 @@ public class UserDTO {
 		this.username = user.getUsername();
 		this.userData = new UserDataDTO();
 		this.userData.setProfilePicUrl(user.getUserData().getProfilePicUrl());
+	}
+	
+	public void setUserDetailsFromUserOrganizationRole(UserOrganizationRoles userOrganizationRoles) {
+		User user = userOrganizationRoles.getUser();
+		this.id = user.getId();
+		this.userData = new UserDataDTO();
+		this.userData.setFirstName(user.getUserData().getFirstName());
+		this.userData.setMiddleName(user.getUserData().getMiddleName());
+		this.userData.setLastName(user.getUserData().getLastName());
+		this.username = user.getUsername();
 	}
 }

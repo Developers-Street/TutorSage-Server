@@ -2,6 +2,7 @@ package com.developersstreet.tutorsage.service;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -10,12 +11,14 @@ import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import com.developersstreet.tutorsage.dto.OrganizationDTO;
+import com.developersstreet.tutorsage.dto.UserDTO;
 import com.developersstreet.tutorsage.model.Course;
 import com.developersstreet.tutorsage.model.Organization;
 import com.developersstreet.tutorsage.model.Role;
 import com.developersstreet.tutorsage.model.User;
 import com.developersstreet.tutorsage.model.UserOrganizationRoles;
 import com.developersstreet.tutorsage.repository.OrganizationRepository;
+import com.developersstreet.tutorsage.repository.RoleRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -25,6 +28,7 @@ import lombok.RequiredArgsConstructor;
 public class OrganizationServiceImplementation implements OrganizationService {
     
     private final OrganizationRepository organizationRepository;
+    private final RoleRepository roleRepository;
     
     private final UserService userService;
     private final UserOrganizationRolesService userOrganizationRolesService;
@@ -119,5 +123,20 @@ public class OrganizationServiceImplementation implements OrganizationService {
 		}
 		if(organization.checkIfStudent(user)) return true;
 		return false;
+	}
+
+	@Override
+	public Set<UserDTO> getAllTutorsByQuery(Long organizationId, String query) {
+		Organization organization = getOrganizationById(organizationId);
+		Role role = roleRepository.findByName("ROLE_TUTOR");
+		Set<UserOrganizationRoles> organizationTutors = organizationRepository.findAllTeamByRole(organization, role, query);
+		Set<UserDTO> tutors = new HashSet<>();
+		Iterator<UserOrganizationRoles> itr = organizationTutors.iterator();
+		while(itr.hasNext()) {
+			UserDTO tutor = new UserDTO();
+			tutor.setUserDetailsFromUserOrganizationRole(itr.next());
+			tutors.add(tutor);
+		}
+		return tutors;
 	}
 }

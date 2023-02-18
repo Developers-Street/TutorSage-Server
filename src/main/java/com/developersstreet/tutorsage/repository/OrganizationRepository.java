@@ -6,7 +6,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import com.developersstreet.tutorsage.model.Organization;
+import com.developersstreet.tutorsage.model.Role;
 import com.developersstreet.tutorsage.model.User;
+import com.developersstreet.tutorsage.model.UserOrganizationRoles;
 
 public interface OrganizationRepository extends JpaRepository<Organization, Long> {
     Organization findOrganizationById(Long Id);
@@ -16,4 +18,7 @@ public interface OrganizationRepository extends JpaRepository<Organization, Long
     
     @Query("SELECT distinct o FROM Organization o, User u, UserOrganizationRoles uor where uor.user = u.id and uor.user = ?1 and o.id = uor.organization")
     Set<Organization> findMyOrganization(User user);
+    
+    @Query("SELECT distinct uor FROM User u, UserData ud, UserOrganizationRoles uor where uor.organization = ?1 and uor.role = ?2 and uor.user = u and u.userData = ud and ud.firstName like %?3%")
+    Set<UserOrganizationRoles> findAllTeamByRole(Organization o, Role r, String query);
 }

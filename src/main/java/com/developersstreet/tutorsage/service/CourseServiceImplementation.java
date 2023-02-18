@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -29,6 +30,7 @@ public class CourseServiceImplementation implements CourseService {
     private final UserOrganizationRolesService userOrganizationRolesService;
     private final OrganizationService organizationService;
     private final SubjectService subjectService;
+    private final UserService userService;
 
     @Override
     public Course getCourseById(Long id) {
@@ -66,8 +68,10 @@ public class CourseServiceImplementation implements CourseService {
     	else {
     		course.setVisibility(CourseVisibilityType.PUBLIC);
     	}
+    	if(!userOrganizationRolesService.isUserPartOfOrganization(organization, course.getHeadTutor())) {
+    		throw new Exception("Head tutor assigned is not part of the organization");
+    	}
     	course.setCreator(user);
-    	course.setHeadTutor(user);
     	Course savedCourse = courseRepository.save(course);
         if(organization != null) {
         	organization.addCourse(savedCourse);
@@ -111,5 +115,50 @@ public class CourseServiceImplementation implements CourseService {
 	@Override
 	public boolean isUserHeadTutor(Course course, User user) {
 		return course.getHeadTutor().equals(user);
+	}
+
+	@Override
+	public String addStudentsToCourse(Long organizationId, Long courseId, Set<Long> studentsId, User user) throws Exception {
+		Organization organization = null;
+    	if(organizationId != null) {
+    		organization = organizationService.getOrganizationById(organizationId);
+    	}
+		Course course = getCourseById(courseId);
+		if(!isUserHeadTutor(course, user)) {
+			if(organization != null) {
+	    		if(!organizationService.isUserAdminOfOrganization(organization, user)) {
+	    			throw new Exception("You are not authorized to perform this task");
+	    		}
+	    	} else {
+	    		throw new Exception("You are not authorized to perform this task");
+	    	}
+		}
+		
+		Integer studentsAdded = 0;
+		Integer totalStudents = studentsId.size();
+		
+		if(organization == null) {
+			Iterator<Long> itr = studentsId.iterator();
+			while(itr.hasNext()) {
+				User student = userService.getUserById(itr.next());
+				if(student == null) continue;
+				if(userService.isStudent(student)) {
+					course.addStudents(student);
+					studentsAdded++;
+				}
+			}
+		} else {
+			Iterator<Long> itr = studentsId.iterator();
+			while(itr.hasNext()) {
+				User student = userService.getUserById(itr.next());
+				if(student == null) continue;
+				if(userService.isStudent(student) && organization.checkIfStudent(student)) {
+					course.addStudents(student);
+					studentsAdded++;
+				}
+			}
+		}
+		
+		return studentsAdded.toString() + " out of " + totalStudents.toString() + " students have been added to the course";
 	}
 }

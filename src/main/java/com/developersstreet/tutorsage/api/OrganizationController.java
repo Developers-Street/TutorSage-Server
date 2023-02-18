@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.developersstreet.tutorsage.dto.OrganizationDTO;
+import com.developersstreet.tutorsage.dto.UserDTO;
 import com.developersstreet.tutorsage.model.Course;
 import com.developersstreet.tutorsage.model.Lecture;
 import com.developersstreet.tutorsage.model.Organization;
@@ -44,7 +45,6 @@ public class OrganizationController {
     
     private final OrganizationService organizationService;
     private final UtilityService utilityService;
-    private final UserService userService;
     private final CourseService courseService;
     private final LectureService lectureService;
     private final TestService testService;
@@ -145,12 +145,34 @@ public class OrganizationController {
         }
     }
     
+    @GetMapping("/{organizationId}/tutors")
+    public void getAllTutors(@PathVariable Long organizationId, @RequestParam String query, HttpServletRequest request, HttpServletResponse response) throws IOException {
+    	try {
+    		Set<UserDTO> tutors = organizationService.getAllTutorsByQuery(organizationId, query);
+    		new ObjectMapper().writeValue(response.getOutputStream(), tutors);
+    	} catch (Exception exception) {
+    		utilityService.setExceptionResponse(exception, response);
+		}
+    }
+    
     @PostMapping("/{organizationId}/join")
     public void joinOrganization(@PathVariable Long organizationId, @RequestParam Long roleId, HttpServletRequest request, HttpServletResponse response) throws IOException {
     	String authorizationHeader = request.getHeader(AUTHORIZATION);
     	try {
     		User user = utilityService.getUserByAuthorizationHeader(authorizationHeader);
     		organizationService.joinOrganization(organizationId, user, roleId);
+    	} catch(Exception exception) {
+    		utilityService.setExceptionResponse(exception, response);
+    	}
+    }
+    
+    @PostMapping("/{organizationId}/course/{courseId}/students/add")
+    public void addStudentsToCourse(@PathVariable Long organizationId, @PathVariable Long courseId, @RequestBody Set<Long> studentsId, HttpServletRequest request, HttpServletResponse response) throws IOException {
+    	String authorizationHeader = request.getHeader(AUTHORIZATION);
+    	try {
+    		User user = utilityService.getUserByAuthorizationHeader(authorizationHeader);
+    		String result = courseService.addStudentsToCourse(organizationId, courseId, studentsId, user);
+    		utilityService.setMessageResponse(result, response, 200);
     	} catch(Exception exception) {
     		utilityService.setExceptionResponse(exception, response);
     	}

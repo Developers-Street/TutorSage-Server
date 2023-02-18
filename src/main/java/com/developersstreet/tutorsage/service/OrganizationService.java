@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.developersstreet.tutorsage.dto.OrganizationDTO;
+import com.developersstreet.tutorsage.dto.UserDTO;
 import com.developersstreet.tutorsage.model.Course;
 import com.developersstreet.tutorsage.model.Organization;
 import com.developersstreet.tutorsage.model.Role;
@@ -16,6 +17,7 @@ public interface OrganizationService {
     void joinOrganization(Long id, User user, Long roleId) throws Exception;
     Set<Organization> getMyOrganization(User user);
     List<Organization> getOrganizationsByQueryAndOffsetAndLimit(String query, Long offset, Long limit) throws Exception;
+    Set<UserDTO> getAllTutorsByQuery(Long organizationId, String query);
     boolean isUserPartOfOrganization(Organization organization, User user);
     boolean isUserAdminOfOrganization(Organization organization, User user);
     boolean isCoursePartOfOrganization(Organization organization, Course course);

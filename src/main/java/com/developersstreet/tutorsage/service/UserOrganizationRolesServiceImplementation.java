@@ -10,6 +10,7 @@ import com.developersstreet.tutorsage.model.Organization;
 import com.developersstreet.tutorsage.model.Role;
 import com.developersstreet.tutorsage.model.User;
 import com.developersstreet.tutorsage.model.UserOrganizationRoles;
+import com.developersstreet.tutorsage.repository.RoleRepository;
 import com.developersstreet.tutorsage.repository.UserOrganizationRolesRepository;
 
 import lombok.RequiredArgsConstructor;
