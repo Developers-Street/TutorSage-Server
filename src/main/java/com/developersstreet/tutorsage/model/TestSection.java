@@ -26,5 +26,5 @@ public class TestSection {
 	private String name;
 	
 	@ManyToMany(fetch = EAGER)
-	private Set<MCQ> mcQuestion;
+	private Set<MCQ> mcqQuestion;
 }

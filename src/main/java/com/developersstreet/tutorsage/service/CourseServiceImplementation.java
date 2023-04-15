@@ -172,7 +172,7 @@ public class CourseServiceImplementation implements CourseService {
 			if(!organization.checkIfCourse(course)) {
 				throw new Exception("Course does not belong to organization");
 			}
-			students = organization.getStudents();
+			students = new HashSet<User>(organization.getStudents());
 			students.removeAll(course.getStudents());
 		}
 		Set<UserDTO> studentsDTO = new HashSet<>();

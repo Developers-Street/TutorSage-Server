@@ -20,7 +20,6 @@ import com.developersstreet.tutorsage.dto.UserDTO;
 import com.developersstreet.tutorsage.model.Course;
 import com.developersstreet.tutorsage.model.Lecture;
 import com.developersstreet.tutorsage.model.Organization;
-import com.developersstreet.tutorsage.model.Role;
 import com.developersstreet.tutorsage.model.Subject;
 import com.developersstreet.tutorsage.model.Test;
 import com.developersstreet.tutorsage.model.User;
@@ -28,7 +27,6 @@ import com.developersstreet.tutorsage.service.CourseService;
 import com.developersstreet.tutorsage.service.LectureService;
 import com.developersstreet.tutorsage.service.OrganizationService;
 import com.developersstreet.tutorsage.service.TestService;
-import com.developersstreet.tutorsage.service.UserService;
 import com.developersstreet.tutorsage.service.UtilityService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
