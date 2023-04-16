@@ -1,5 +1,6 @@
-package com.developersstreet.tutorsage.model;
+package com.developersstreet.tutorsage.model.user;
 
+import com.developersstreet.tutorsage.model.AuditModel;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;

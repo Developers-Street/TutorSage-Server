@@ -1,4 +1,4 @@
-package com.developersstreet.tutorsage.model;
+package com.developersstreet.tutorsage.model.subject;
 
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
@@ -7,6 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 import com.developersstreet.tutorsage.enums.TestStatus;
+import com.developersstreet.tutorsage.model.AuditModel;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

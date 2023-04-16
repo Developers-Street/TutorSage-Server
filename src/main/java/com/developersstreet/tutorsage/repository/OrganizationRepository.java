@@ -5,10 +5,10 @@ import java.util.Set;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import com.developersstreet.tutorsage.model.Organization;
-import com.developersstreet.tutorsage.model.Role;
-import com.developersstreet.tutorsage.model.User;
-import com.developersstreet.tutorsage.model.UserOrganizationRoles;
+import com.developersstreet.tutorsage.model.organization.Organization;
+import com.developersstreet.tutorsage.model.organization.UserOrganizationRoles;
+import com.developersstreet.tutorsage.model.user.Role;
+import com.developersstreet.tutorsage.model.user.User;
 
 public interface OrganizationRepository extends JpaRepository<Organization, Long> {
     Organization findOrganizationById(Long Id);

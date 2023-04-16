@@ -1,4 +1,4 @@
-package com.developersstreet.tutorsage.model;
+package com.developersstreet.tutorsage.model.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,6 +8,8 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+
+import com.developersstreet.tutorsage.model.AuditModel;
 
 import static javax.persistence.GenerationType.AUTO;
 

@@ -4,10 +4,10 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.developersstreet.tutorsage.model.Organization;
-import com.developersstreet.tutorsage.model.Role;
-import com.developersstreet.tutorsage.model.User;
-import com.developersstreet.tutorsage.model.UserOrganizationRoles;
+import com.developersstreet.tutorsage.model.organization.Organization;
+import com.developersstreet.tutorsage.model.organization.UserOrganizationRoles;
+import com.developersstreet.tutorsage.model.user.Role;
+import com.developersstreet.tutorsage.model.user.User;
 
 public interface UserOrganizationRolesRepository extends JpaRepository<UserOrganizationRoles, Long> {
 	List<UserOrganizationRoles> findByUserAndOrganization(User user, Organization organization);

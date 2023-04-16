@@ -1,7 +1,7 @@
 package com.developersstreet.tutorsage.repository;
 
 import com.developersstreet.tutorsage.enums.CourseVisibilityType;
-import com.developersstreet.tutorsage.model.Course;
+import com.developersstreet.tutorsage.model.organization.Course;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

@@ -1,30 +1,36 @@
-package com.developersstreet.tutorsage.model;
+package com.developersstreet.tutorsage.model.subject;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import com.developersstreet.tutorsage.model.AuditModel;
+import com.developersstreet.tutorsage.model.user.User;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import static javax.persistence.GenerationType.AUTO;
+
 import static javax.persistence.FetchType.EAGER;
 
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class MCQOption {
+public class MCQ extends AuditModel {
 	@Id
 	@GeneratedValue(strategy = AUTO)
 	private Long id;
 	
 	@ManyToOne(fetch = EAGER)
-	private MCQ question;
+	private User author;
 	
-	private String value;
+	private String statement;
 	
-	private boolean correct;
+	private Integer marks;
+	
+	private Integer negativeMarks;
 }

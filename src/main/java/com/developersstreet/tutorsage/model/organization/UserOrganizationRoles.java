@@ -1,6 +1,9 @@
-package com.developersstreet.tutorsage.model;
+package com.developersstreet.tutorsage.model.organization;
 
 import javax.persistence.*;
+
+import com.developersstreet.tutorsage.model.user.Role;
+import com.developersstreet.tutorsage.model.user.User;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

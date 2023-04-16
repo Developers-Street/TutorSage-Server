@@ -1,8 +1,8 @@
 package com.developersstreet.tutorsage.service;
 
-import com.developersstreet.tutorsage.model.Role;
-import com.developersstreet.tutorsage.model.User;
-import com.developersstreet.tutorsage.model.UserData;
+import com.developersstreet.tutorsage.model.user.Role;
+import com.developersstreet.tutorsage.model.user.User;
+import com.developersstreet.tutorsage.model.user.UserData;
 import com.developersstreet.tutorsage.repository.RoleRepository;
 import com.developersstreet.tutorsage.repository.UserDataRepository;
 import com.developersstreet.tutorsage.repository.UserRepository;

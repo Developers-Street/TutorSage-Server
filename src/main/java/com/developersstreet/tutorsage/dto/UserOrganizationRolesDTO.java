@@ -1,7 +1,7 @@
 package com.developersstreet.tutorsage.dto;
 
-import com.developersstreet.tutorsage.model.Role;
-import com.developersstreet.tutorsage.model.User;
+import com.developersstreet.tutorsage.model.user.Role;
+import com.developersstreet.tutorsage.model.user.User;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import lombok.AllArgsConstructor;

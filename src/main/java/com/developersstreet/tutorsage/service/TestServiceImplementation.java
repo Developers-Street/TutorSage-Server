@@ -5,7 +5,7 @@ import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import com.developersstreet.tutorsage.enums.TestStatus;
-import com.developersstreet.tutorsage.model.Test;
+import com.developersstreet.tutorsage.model.subject.Test;
 import com.developersstreet.tutorsage.repository.TestRepository;
 
 import lombok.RequiredArgsConstructor;

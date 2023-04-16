@@ -1,8 +1,9 @@
 package com.developersstreet.tutorsage.service;
 
-import com.developersstreet.tutorsage.model.User;
-
 import javax.servlet.http.HttpServletResponse;
+
+import com.developersstreet.tutorsage.model.user.User;
+
 import java.io.IOException;
 
 public interface UtilityService {

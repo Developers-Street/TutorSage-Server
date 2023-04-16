@@ -2,10 +2,10 @@ package com.developersstreet.tutorsage.service;
 
 import com.developersstreet.tutorsage.dto.UserDTO;
 import com.developersstreet.tutorsage.enums.CourseVisibilityType;
-import com.developersstreet.tutorsage.model.Course;
-import com.developersstreet.tutorsage.model.Organization;
-import com.developersstreet.tutorsage.model.Subject;
-import com.developersstreet.tutorsage.model.User;
+import com.developersstreet.tutorsage.model.organization.Course;
+import com.developersstreet.tutorsage.model.organization.Organization;
+import com.developersstreet.tutorsage.model.subject.Subject;
+import com.developersstreet.tutorsage.model.user.User;
 import com.developersstreet.tutorsage.repository.CourseRepository;
 
 import lombok.RequiredArgsConstructor;

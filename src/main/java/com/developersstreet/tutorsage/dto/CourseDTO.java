@@ -3,8 +3,8 @@ package com.developersstreet.tutorsage.dto;
 import java.util.Set;
 
 import com.developersstreet.tutorsage.enums.CourseVisibilityType;
-import com.developersstreet.tutorsage.model.Course;
-import com.developersstreet.tutorsage.model.Subject;
+import com.developersstreet.tutorsage.model.organization.Course;
+import com.developersstreet.tutorsage.model.subject.Subject;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import lombok.AllArgsConstructor;

@@ -1,7 +1,7 @@
 package com.developersstreet.tutorsage.api;
 
-import com.developersstreet.tutorsage.model.Course;
-import com.developersstreet.tutorsage.model.User;
+import com.developersstreet.tutorsage.model.organization.Course;
+import com.developersstreet.tutorsage.model.user.User;
 import com.developersstreet.tutorsage.service.CourseService;
 import com.developersstreet.tutorsage.service.UtilityService;
 import com.fasterxml.jackson.databind.ObjectMapper;

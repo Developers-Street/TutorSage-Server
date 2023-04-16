@@ -17,12 +17,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.developersstreet.tutorsage.dto.OrganizationDTO;
 import com.developersstreet.tutorsage.dto.UserDTO;
-import com.developersstreet.tutorsage.model.Course;
-import com.developersstreet.tutorsage.model.Lecture;
-import com.developersstreet.tutorsage.model.Organization;
-import com.developersstreet.tutorsage.model.Subject;
-import com.developersstreet.tutorsage.model.Test;
-import com.developersstreet.tutorsage.model.User;
+import com.developersstreet.tutorsage.model.organization.Course;
+import com.developersstreet.tutorsage.model.organization.Organization;
+import com.developersstreet.tutorsage.model.subject.Lecture;
+import com.developersstreet.tutorsage.model.subject.Subject;
+import com.developersstreet.tutorsage.model.subject.Test;
+import com.developersstreet.tutorsage.model.user.User;
 import com.developersstreet.tutorsage.service.CourseService;
 import com.developersstreet.tutorsage.service.LectureService;
 import com.developersstreet.tutorsage.service.OrganizationService;

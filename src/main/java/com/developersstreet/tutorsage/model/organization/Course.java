@@ -1,4 +1,4 @@
-package com.developersstreet.tutorsage.model;
+package com.developersstreet.tutorsage.model.organization;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 import com.developersstreet.tutorsage.enums.CourseVisibilityType;
+import com.developersstreet.tutorsage.model.AuditModel;
+import com.developersstreet.tutorsage.model.subject.Subject;
+import com.developersstreet.tutorsage.model.user.User;
 
 import java.util.Set;
 

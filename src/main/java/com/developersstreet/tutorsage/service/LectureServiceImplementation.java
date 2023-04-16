@@ -4,10 +4,10 @@ import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
 
-import com.developersstreet.tutorsage.model.Course;
-import com.developersstreet.tutorsage.model.Lecture;
-import com.developersstreet.tutorsage.model.Subject;
-import com.developersstreet.tutorsage.model.User;
+import com.developersstreet.tutorsage.model.organization.Course;
+import com.developersstreet.tutorsage.model.subject.Lecture;
+import com.developersstreet.tutorsage.model.subject.Subject;
+import com.developersstreet.tutorsage.model.user.User;
 import com.developersstreet.tutorsage.repository.LectureRepository;
 
 import lombok.RequiredArgsConstructor;

@@ -1,4 +1,4 @@
-package com.developersstreet.tutorsage.model;
+package com.developersstreet.tutorsage.model.organization;
 
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
@@ -19,6 +19,8 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import com.developersstreet.tutorsage.enums.OrganizationType;
+import com.developersstreet.tutorsage.model.AuditModel;
+import com.developersstreet.tutorsage.model.user.User;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
