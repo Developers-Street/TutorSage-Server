@@ -118,18 +118,6 @@ public class OrganizationController {
     		utilityService.setExceptionResponse(exception, response);
 		}
     }
-    
-    @PostMapping("/{organizationId}/course/{courseId}/subject/{subjectId}/test/create")
-    public void createTestInSubject(@PathVariable Long subjectId, HttpServletRequest request, HttpServletResponse response) throws IOException {
-    	String authorizationHeader = request.getHeader(AUTHORIZATION);
-    	try {
-    		User user = utilityService.getUserByAuthorizationHeader(authorizationHeader);
-    		Test newTest = testService.createTest();
-    		new ObjectMapper().writeValue(response.getOutputStream(), newTest);
-    	} catch (Exception exception) {
-    		utilityService.setExceptionResponse(exception, response);
-		}
-    }
 
     @GetMapping("/{id}")
     public void getOneOrganization(@PathVariable Long id, HttpServletRequest request, HttpServletResponse response) throws IOException {

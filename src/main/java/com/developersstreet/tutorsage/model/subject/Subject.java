@@ -35,7 +35,14 @@ public class Subject extends AuditModel {
 	@OneToMany(fetch = EAGER)
 	private Set<Lecture> lectures;
 	
+	@OneToMany(fetch = EAGER)
+	private Set<Test> tests;
+	
 	public void addLecture(Lecture lecture) {
 		this.lectures.add(lecture);
+	}
+	
+	public void addTest(Test test) {
+		this.tests.add(test);
 	}
 }

@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import com.developersstreet.tutorsage.model.AuditModel;
 import com.developersstreet.tutorsage.model.user.User;
@@ -13,8 +14,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import static javax.persistence.GenerationType.AUTO;
-
 import static javax.persistence.FetchType.EAGER;
+import static javax.persistence.CascadeType.ALL;
+
+import java.util.Set;
+
 
 @Entity
 @Data
@@ -28,9 +32,10 @@ public class MCQ extends AuditModel {
 	@ManyToOne(fetch = EAGER)
 	private User author;
 	
+	@OneToMany(fetch = EAGER, cascade = ALL)
+	private Set<MCQOption> options;
+	
 	private String statement;
 	
-	private Integer marks;
-	
-	private Integer negativeMarks;
+	private Boolean isMultiCorrect;
 }

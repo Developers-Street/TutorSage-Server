@@ -16,6 +16,7 @@ import lombok.NoArgsConstructor;
 import static javax.persistence.FetchType.EAGER;
 import static javax.persistence.EnumType.STRING;
 import static javax.persistence.GenerationType.AUTO;
+import static javax.persistence.CascadeType.ALL;
 
 import java.util.Date;
 import java.util.Set;
@@ -43,6 +44,6 @@ public class Test extends AuditModel {
 	
 	private Long duration;
 	
-	@OneToMany(fetch = EAGER)
+	@OneToMany(fetch = EAGER, cascade = ALL)
 	private Set<TestSection> sections;
 }

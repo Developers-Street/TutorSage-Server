@@ -21,9 +21,6 @@ public class MCQOption {
 	@GeneratedValue(strategy = AUTO)
 	private Long id;
 	
-	@ManyToOne(fetch = EAGER)
-	private MCQ question;
-	
 	private String value;
 	
 	private boolean correct;
