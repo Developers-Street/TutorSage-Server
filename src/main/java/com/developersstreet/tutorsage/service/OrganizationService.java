@@ -7,7 +7,6 @@ import com.developersstreet.tutorsage.dto.OrganizationDTO;
 import com.developersstreet.tutorsage.dto.UserDTO;
 import com.developersstreet.tutorsage.model.organization.Course;
 import com.developersstreet.tutorsage.model.organization.Organization;
-import com.developersstreet.tutorsage.model.user.Role;
 import com.developersstreet.tutorsage.model.user.User;
 
 public interface OrganizationService {

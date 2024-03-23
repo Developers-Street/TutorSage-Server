@@ -40,8 +40,10 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<User> registerUser(@Valid @RequestBody User user, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("auth/signup").toUriString());
+        log.info("Reaching here");
+    	URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("auth/signup").toUriString());
         User savedUser = null;
+        log.info("New User Signup" + user.getEmail());
         try {
             if(userService.getUserByEmail(user.getEmail()) != null) throw new Exception("Email already exist!!");
             if(userService.getUserByUsername(user.getUsername()) != null) throw new Exception("Username already exists!!");
