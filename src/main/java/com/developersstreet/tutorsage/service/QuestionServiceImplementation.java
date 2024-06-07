@@ -1,7 +1,5 @@
 package com.developersstreet.tutorsage.service;
 
-import java.io.IOException;
-
 import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;

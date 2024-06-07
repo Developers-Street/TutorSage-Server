@@ -49,6 +49,7 @@ public class OrganizationController {
     @GetMapping("/")
     public void getOrganizations(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
+			log.info("get organizations called");
             String query = request.getParameter("query");
             Long offset = Long.parseLong(request.getParameter("offset"));
             Long limit = Long.parseLong(request.getParameter("limit"));

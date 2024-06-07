@@ -31,6 +31,7 @@ public class QuestionController {
 	
 	@PostMapping("/mcq/create")
 	public void createMCQQuestion(@RequestBody MCQ mcq, HttpServletRequest request, HttpServletResponse response) throws IOException {
+		log.info("Create mcq called");
 		String authorizationHeader = request.getHeader(AUTHORIZATION);
 		try {
 			User user = utilityService.getUserByAuthorizationHeader(authorizationHeader);

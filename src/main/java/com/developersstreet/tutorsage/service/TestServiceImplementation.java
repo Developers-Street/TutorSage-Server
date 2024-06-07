@@ -8,7 +8,6 @@ import com.developersstreet.tutorsage.enums.TestStatus;
 import com.developersstreet.tutorsage.model.subject.Subject;
 import com.developersstreet.tutorsage.model.subject.Test;
 import com.developersstreet.tutorsage.model.user.User;
-import com.developersstreet.tutorsage.repository.SubjectRepository;
 import com.developersstreet.tutorsage.repository.TestRepository;
 
 import lombok.RequiredArgsConstructor;

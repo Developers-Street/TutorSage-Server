@@ -32,6 +32,7 @@ public class TestController {
 	
 	@PostMapping("/create")
 	public void createTest(@PathVariable Long subjectId, @RequestBody Test test, HttpServletRequest request, HttpServletResponse response) throws IOException {
+		log.info("create test called");
 		String authorizationHeader = request.getHeader(AUTHORIZATION);
 		try {
 			User user = utilityService.getUserByAuthorizationHeader(authorizationHeader);

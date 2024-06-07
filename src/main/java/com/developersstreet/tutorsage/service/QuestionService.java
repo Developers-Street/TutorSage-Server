@@ -1,7 +1,5 @@
 package com.developersstreet.tutorsage.service;
 
-import java.io.IOException;
-
 import com.developersstreet.tutorsage.model.subject.MCQ;
 import com.developersstreet.tutorsage.model.user.User;
 

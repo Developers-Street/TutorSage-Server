@@ -10,7 +10,6 @@ import com.developersstreet.tutorsage.model.organization.Organization;
 import com.developersstreet.tutorsage.model.organization.UserOrganizationRoles;
 import com.developersstreet.tutorsage.model.user.Role;
 import com.developersstreet.tutorsage.model.user.User;
-import com.developersstreet.tutorsage.repository.RoleRepository;
 import com.developersstreet.tutorsage.repository.UserOrganizationRolesRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -26,6 +25,7 @@ public class UserOrganizationRolesServiceImplementation implements UserOrganizat
 
 	@Override
 	public UserOrganizationRoles createUserOrganizationRoles(Organization organization, Role role, User user) throws Exception {
+		log.info("Create User Organization Roles called");
 		if(userOrganizationRolesRepository.findByUserAndOrganizationAndRole(user, organization, role).size() > 0) {
 			throw new Exception("User already have this role in the organization");
 		}

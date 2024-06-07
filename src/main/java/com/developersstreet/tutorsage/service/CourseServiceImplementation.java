@@ -35,6 +35,7 @@ public class CourseServiceImplementation implements CourseService {
 
     @Override
     public Course getCourseById(Long id) {
+		log.info("Get Course By Id Called");
         return courseRepository.findCourseById(id);
     }
 
